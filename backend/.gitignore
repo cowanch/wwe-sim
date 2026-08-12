@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+backend/node_modules/
+
+# Environment variables
+.env
+
+# Prisma
+prisma/migrations/dev.db
+*.db
+
+# Prisma generated client (if output path is customized)
+/generated/prisma
