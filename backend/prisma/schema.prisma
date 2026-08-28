@@ -15,9 +15,152 @@ enum Gender {
   F
 }
 
+enum Brand {
+  RAW
+  SMACKDOWN
+  NXT
+}
+
+enum Division {
+  MAIN_EVENT
+  MID_CARD
+  WOMENS
+  TAG_TEAM
+}
+
+enum Phase {
+  EXHIBITION
+  CONTENDER
+  PPV
+  TOURNAMENT
+}
+
 model Superstar {
-  id       Int      @id @default(autoincrement())
+  id            Int        @id @default(autoincrement())
+  name          String
+  overall       Int
+  gender        Gender
+  tagTeam       TagTeamMembership?
+  brandHistory  BrandMembership[]
+  matchSides    MatchSide[]
+  tournaments   TournamentSeed[]
+}
+
+model TagTeam {
+  id            Int          @id @default(autoincrement())
+  name          String
+  members       TagTeamMembership[]
+  brandHistory  BrandMembership[]
+  matchSides    MatchSide[]
+  tournaments   TournamentSeed[]
+}
+
+model TagTeamMembership {
+  superstarId   Int        @unique
+  superstar     Superstar  @relation(fields: [superstarId], references: [id])
+  tagTeamId     Int
+  tagTeam       TagTeam    @relation(fields: [tagTeamId], references: [id])
+  order         Int
+  @@id([superstarId, tagTeamId])
+}
+
+model Championship {
+  id        Int       @id @default(autoincrement())
+  name      String
+  brand     Brand
+  division  Division
+  matches   MatchSideChampionship[]
+}
+
+model Event {
+  id           Int        @id @default(autoincrement())
+  name         String
+  date         DateTime
+  brands       Brand[]
+  matches      Match[]
+  tournaments  Tournament[]
+}
+
+// Single, Tag Team, Battle Royal, Elimination Chamber, Royal Rumble, Money in the Bank, Ladder, TLC
+model MatchType {
+  id       Int        @id @default(autoincrement())
   name     String
-  overall  Int
-  gender   Gender
+  matches  Match[]
+}
+
+model Match {
+  id            Int        @id @default(autoincrement())
+  eventId       Int
+  event         Event      @relation(fields: [eventId], references: [id])
+  phase         Phase
+  matchTypeId   Int
+  matchType     MatchType  @relation(fields: [matchTypeId], references: [id])
+  sides         MatchSide[]
+  brandSwapIn   BrandMembership?  @relation("StartMatch")
+  brandSwapOut  BrandMembership?  @relation("EndMatch")
+  tournament    TournamentMatch?
+}
+
+model MatchSide {
+  id            Int         @id @default(autoincrement())
+  matchId       Int
+  match         Match       @relation(fields: [matchId], references: [id])
+  superstars    Superstar[]
+  tagTeamId     Int?
+  tagTeam       TagTeam?    @relation(fields: [tagTeamId], references: [id])
+  winner        Boolean
+  championship  MatchSideChampionship?
+  @@unique([id, matchId])
+}
+
+model MatchSideChampionship {
+  matchSideId     Int          @unique
+  matchSide       MatchSide    @relation(fields: [matchSideId], references: [id])
+  championshipId  Int
+  championship    Championship @relation(fields: [championshipId], references: [id])
+  defending       Boolean
+  @@id([matchSideId, championshipId])
+}
+
+model BrandMembership {
+  id            Int         @id @default(autoincrement())
+  superstarId   Int?
+  superstar     Superstar?  @relation(fields: [superstarId], references: [id])
+  tagTeamId     Int?
+  tagTeam       TagTeam?    @relation(fields: [tagTeamId], references: [id])
+  brand         Brand
+  division      Division
+  startMatchId  Int         @unique
+  startMatch    Match       @relation("StartMatch", fields: [startMatchId], references: [id])
+  endMatchId    Int?        @unique
+  endMatch      Match?      @relation("EndMatch", fields: [endMatchId], references: [id])
+}
+
+model Tournament {
+  id       Int         @id @default(autoincrement())
+  name     String
+  eventId  Int
+  event    Event       @relation(fields: [eventId], references: [id])
+  matches  TournamentMatch[]
+  seeds    TournamentSeed[]
+}
+
+model TournamentMatch {
+  id            Int         @id @default(autoincrement())
+  tournamentId  Int
+  tournament    Tournament  @relation(fields: [tournamentId], references: [id])
+  matchId       Int         @unique
+  match         Match       @relation(fields: [matchId], references: [id])
+  matchNumber   Int
+}
+
+model TournamentSeed {
+  tournamentId  Int
+  tournament    Tournament  @relation(fields: [tournamentId], references: [id])
+  superstarId   Int?
+  superstar     Superstar?  @relation(fields: [superstarId], references: [id])
+  tagTeamId     Int?
+  tagTeam       TagTeam?    @relation(fields: [tagTeamId], references: [id])
+  seedNumber    Int
+  @@id([tournamentId, seedNumber])
 }

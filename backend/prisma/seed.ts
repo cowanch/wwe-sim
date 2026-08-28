@@ -3,7 +3,24 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.superstar.createMany({
+
+  const titles = await prisma.championship.createManyAndReturn({
+    data: [
+      { name: "WWE Championship", brand: "SMACKDOWN", division: "MAIN_EVENT" },
+      { name: "Universal Championship", brand: "RAW", division: "MAIN_EVENT" },
+      { name: "NXT Championship", brand: "NXT", division: "MAIN_EVENT" },
+      { name: "Intercontinental Championship", brand: "RAW", division: "MID_CARD" },
+      { name: "United States Championship", brand: "SMACKDOWN", division: "MID_CARD" },
+      { name: "Raw Women's Championship", brand: "RAW", division: "WOMENS" },
+      { name: "SmackDown Women's Championship", brand: "SMACKDOWN", division: "WOMENS" },
+      { name: "NXT Women's Championship", brand: "NXT", division: "WOMENS" },
+      { name: "Raw Tag Team Championship", brand: "RAW", division: "TAG_TEAM" },
+      { name: "SmackDown Tag Team Championship", brand: "SMACKDOWN", division: "TAG_TEAM" },
+      { name: "NXT Tag Team Championship", brand: "NXT", division: "TAG_TEAM" },
+    ]
+  });
+
+  const superstars = await prisma.superstar.createManyAndReturn({
     data: [
       { name: "Aiden English", overall: 75, gender: "M" },
       { name: "AJ Styles", overall: 90, gender: "M" },
@@ -167,6 +184,97 @@ async function main() {
       { name: "Zack Ryder", overall: 81, gender: "M" },
     ],
   });
+
+  const teams = await prisma.tagTeam.createManyAndReturn({
+    data: [
+      { name: "#DIY" },
+      { name: "Alexander & Swann" },
+      { name: "American Alpha" },
+      { name: "Breezango" },
+      { name: "DDP & Cactus Jack" },
+      { name: "Enzo & Cass" },
+      { name: "Gallows & Anderson" },
+      { name: "Itami & Tozawa" },
+      { name: "Kendrick & Gallagher" },
+      { name: "SAnitY" },
+      { name: "Slater & Rhyno" },
+      { name: "The Ascension" },
+      { name: "The Authors of Pain" },
+      { name: "The B-Team" },
+      { name: "The Bar" },
+      { name: "The Bushwhackers" },
+      { name: "The Colons" },
+      { name: "The Dream Team" },
+      { name: "The Fabulous Freebirds" },
+      { name: "The Golden Truth" },
+      { name: "The Hart Foundation" },
+      { name: "The Hype Bros" },
+      { name: "The Lucha Dragons" },
+      { name: "The Natural Disasters" },
+      { name: "The New Day" },
+      { name: "The Outsiders" },
+      { name: "The Revival" },
+      { name: "The Usos" },
+      { name: "The Von Erichs" },
+      { name: "The Wyatt Family" },
+      { name: "Titus Worldwide" },
+      { name: "TM-61" },
+    ]
+  });
+
+  const teamMembers: Record<string, Array<string>> = {
+    "#DIY": ["Johnny Gargano", "Tommaso Ciampa"],
+    "Alexander & Swann": ["Cedric Alexander", "Rich Swann"],
+    "American Alpha": ["Chad Gable", "Jason Jordan"],
+    "Breezango": ["Tyler Breeze", "Fandango"],
+    "DDP & Cactus Jack": ["Diamond Dallas Page", "Cactus Jack"],
+    "Enzo & Cass": ["Enzo Amore", "Big Cass"],
+    "Gallows & Anderson": ["Luke Gallows", "Karl Anderson"],
+    "Itami & Tozawa": ["Hideo Itami", "Akira Tozawa"],
+    "Kendrick & Gallagher": ["The Brian Kendrick", "Jack Gallagher"],
+    "SAnitY": ["Eric Young", "Alexander Wolfe", "Killian Dain"],
+    "Slater & Rhyno": ["Heath Slater", "Rhyno"],
+    "The Ascension": ["Konnor", "Viktor"],
+    "The Authors of Pain": ["Akam", "Rezar"],
+    "The B-Team": ["Curtis Axel", "Bo Dallas"],
+    "The Bar": ["Sheamus", "Cesaro"],
+    "The Bushwhackers": ["Bushwhacker Butch", "Bushwhacker Luke"],
+    "The Colons": ["Primo Colon", "Epico Colon"],
+    "The Dream Team": ["Brutus Beefcake", "Greg Valentine"],
+    "The Fabulous Freebirds": ["Michael Hayes", "Buddy Roberts", "Jimmy Garvin"],
+    "The Golden Truth": ["Goldust", "R-Truth"],
+    "The Hart Foundation": ["Jim Neidhart", "British Bulldog"],
+    "The Hype Bros": ["Zack Ryder", "Mojo Rawley"],
+    "The Lucha Dragons": ["Kalisto", "Sin Cara"],
+    "The Natural Disasters": ["Earthquake", "Typhoon"],
+    "The New Day": ["Big E", "Kofi Kingston", "Xavier Woods"],
+    "The Outsiders": ["Kevin Nash", "Scott Hall"],
+    "The Revival": ["Dash Wilder", "Scott Dawson"],
+    "The Usos": ["Jimmy Uso", "Jey Uso"],
+    "The Von Erichs": ["Kerry Von Erich", "Kevin Von Erich"],
+    "The Wyatt Family": ["Luke Harper", "Erick Rowan"],
+    "Titus Worldwide": ["Titus O'Neil", "Apollo Crews"],
+    "TM-61": ["Nick Miller", "Shane Thorne"],
+  };
+
+  const teamMemberData: Array<{ tagTeamId: number, superstarId: number, order: number }> = [];
+  for (const [teamName, members] of Object.entries(teamMembers)) {
+    const tagTeamId = getItemByName(teams, teamName).id;
+    for (let index = 0; index < members.length; index++) {
+      const superstarId = getItemByName(superstars, members[index]).id;
+      teamMemberData.push({ tagTeamId, superstarId, order: index });
+    }
+  }
+
+  await prisma.tagTeamMembership.createMany({
+    data: teamMemberData
+  });
+}
+
+function getItemByName(list: Array<{ name: string, id: number }>, name: string) {
+  const item = list.find(i => i.name === name);
+  if (!item) throw new Error(`Failed to find item: ${name}`);
+  return item;
 }
 
 main()
