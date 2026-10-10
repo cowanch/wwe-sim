@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { Superstar } from "../types";
+import { rosterApi } from "../api/rosterApi";
 
 export default function RosterTable() {
   const [superstars, setSuperstars] = useState<Superstar[]>([]);
@@ -7,13 +8,7 @@ export default function RosterTable() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    fetch("/api/roster/superstars")
-        .then((res) => {
-            if (!res.ok) {
-                throw new Error(`Request failed: ${res.status}`);
-            }
-            return res.json();
-        })
+    rosterApi.getSuperstars()
         .then(setSuperstars)
         .catch((err) => setError(err.message))
         .finally(() => setLoading(false));

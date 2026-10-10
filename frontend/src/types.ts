@@ -4,3 +4,9 @@ export interface Superstar {
     overall: number;
     gender: "M" | "F";
 }
+
+export interface TagTeam {
+    id: number;
+    name: string;
+    members: Superstar[];
+}
