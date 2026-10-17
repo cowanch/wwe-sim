@@ -1,0 +1,43 @@
+$border-light: #e6e6e6;
+$header-top: #4d4d4d;
+$header-bottom: #2c2c2c;
+$header-border: #7a7a7a;
+$cell-bg: #151515;
+$cell-border: #2e2e2e;
+$hover-bg: #c4281f;
+$hover-border: #e0584f;
+
+.data-table {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: separate;
+    border-spacing: 2px;
+    background: #3b3b3b;
+    border: 2px solid $border-light;
+    border-radius: 4px;
+    color: #fff;
+    text-align: center;
+    font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+
+    th {
+        padding: 0.5rem 0.75rem;
+        background: linear-gradient($header-top, $header-bottom);
+        border: 1px solid $header-border;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    td {
+        padding: 0.4rem 0.75rem;
+        background: $cell-bg;
+        border: 1px solid $cell-border;
+        transition: background-color 0.08s;
+    }
+
+    tbody tr:hover td {
+        background-color: $hover-bg;
+        border-color: $hover-border;
+    }
+}

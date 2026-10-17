@@ -3,7 +3,28 @@ import * as superstarService from "../services/superstarService";
 
 export async function getAll(req: Request, res: Response) {
     const superstars = await superstarService.getAll();
-    res.json(superstars);
+    res.json(superstars.map((superstar) => ({
+        ...superstar,
+        rank: superstar.overall,
+        wins: 0,
+        losses: 0,
+        ppvWins: 0,
+        ppvLosses: 0,
+        championship: null,
+        titleHistory: {
+            wwe: 0,
+            universal: 0,
+            nxt: 0,
+            intercontinental: 0,
+            unitedStates: 0,
+            rawWomens: 0,
+            smackdownWomens: 0,
+            nxtWomens: 0,
+            rawTagTeam: 0,
+            smackdownTagTeam: 0,
+            nxtTagTeam: 0,
+        },
+    })));
 }
 
 export async function getById(req: Request, res: Response) {
