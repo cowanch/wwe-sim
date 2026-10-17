@@ -37,3 +37,14 @@ export const api = {
         request<T>(path, { method: "PUT", body: JSON.stringify(body) }),
     delete: <T>(path: string) => request<T>(path, { method: "DELETE" }),
 };
+
+export function toQuery(params: object) {
+    const search = new URLSearchParams();
+    for (const [key, value] of Object.entries(params)) {
+        if (value !== undefined) {
+            search.set(key, String(value));
+        }
+    }
+    const query = search.toString();
+    return query ? `?${query}` : "";
+}

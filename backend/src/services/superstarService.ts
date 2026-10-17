@@ -7,9 +7,12 @@ interface CreateSuperstarInput {
     gender: Gender;
 }
 
-export async function getAll() {
+export async function getAll(filters: { gender?: Gender } = {}) {
     return prisma.superstar.findMany({
-        include: { tagTeam: true },
+        where: {
+            gender: filters.gender,
+            tagTeam: null,
+        },
     });
 }
 

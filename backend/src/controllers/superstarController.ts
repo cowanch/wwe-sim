@@ -2,7 +2,13 @@ import type { Request, Response } from "express";
 import * as superstarService from "../services/superstarService";
 
 export async function getAll(req: Request, res: Response) {
-    const superstars = await superstarService.getAll();
+    const { gender } = req.query;
+
+    if (gender !== undefined && gender !== "M" && gender !== "F") {
+        return res.status(400).json({ error: "gender must be M or F" });
+    }
+
+    const superstars = await superstarService.getAll({ gender });
     res.json(superstars.map((superstar) => ({
         ...superstar,
         rank: superstar.overall,

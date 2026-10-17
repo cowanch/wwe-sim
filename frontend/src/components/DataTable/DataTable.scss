@@ -8,6 +8,7 @@ $hover-bg: #c4281f;
 $hover-border: #e0584f;
 
 .data-table {
+    table-layout: fixed;
     width: 100%;
     margin: 0 auto;
     border-collapse: separate;

@@ -8,7 +8,7 @@ interface SuperstarTableProps {
 }
 
 export default function SuperstarTable({ gender }: SuperstarTableProps) {
-  const { data, loading, error } = useFetch(rosterApi.getSuperstars);
+  const { data, loading, error } = useFetch(() => rosterApi.getSuperstars({ gender }));
 
   if (loading) {
     return <p>Loading roster...</p>;
@@ -19,6 +19,10 @@ export default function SuperstarTable({ gender }: SuperstarTableProps) {
   }
   
   return (
-    <DataTable data={data ?? []} columns={baseColumns} />
+    <DataTable
+      data={data ?? []}
+      columns={baseColumns}
+      defaultSorting={[{ id: "name", desc: false }]}
+    />
   );
 }

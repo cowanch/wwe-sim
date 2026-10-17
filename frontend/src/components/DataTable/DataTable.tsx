@@ -12,10 +12,11 @@ import "./DataTable.scss";
 interface DataTableProps<T> {
 	data: T[];
 	columns: ColumnDef<T, any>[];
+	defaultSorting?: SortingState;
 }
 
-export default function DataTable<T>({ data, columns }: DataTableProps<T>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
+export default function DataTable<T>({ data, columns, defaultSorting }: DataTableProps<T>) {
+  const [sorting, setSorting] = useState<SortingState>(defaultSorting || []);
 
   const table = useReactTable<T>({
     data,
@@ -29,7 +30,15 @@ export default function DataTable<T>({ data, columns }: DataTableProps<T>) {
   const headerGroups = table.getHeaderGroups();
   
   return (
-    <table className="data-table">
+    <table 
+			className="data-table"
+			style={{ width: table.getTotalSize() }}
+		>
+			<colgroup>
+				{table.getVisibleLeafColumns().map((column) => (
+					<col key={column.id} style={{ width: column.getSize() }} />
+				))}
+			</colgroup>
       <thead>
         {headerGroups.map((headerGroup, rowIndex) => (
           <tr key={headerGroup.id}>
