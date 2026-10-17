@@ -1,5 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import type { Superstar } from "../../../types";
+import type { Championship, Superstar } from "../../../types";
+import { hideZero, shortTitleName, spread, winPercentage } from "../../../utils/format";
 
 const columnHelper = createColumnHelper<Superstar>();
 
@@ -15,7 +16,7 @@ export const baseColumns = [
       columnHelper.accessor((row) => row.wins - row.losses, {
         id: "spread",
         header: "Spread",
-        cell: (info) => formatSpread(info.getValue()),
+        cell: (info) => spread(info.getValue()),
         size: 95,
       }),
     ],
@@ -28,7 +29,7 @@ export const baseColumns = [
       columnHelper.accessor((row) => row.ppvWins - row.ppvLosses, {
         id: "ppvSpread",
         header: "Spread",
-        cell: (info) => formatSpread(info.getValue()),
+        cell: (info) => spread(info.getValue()),
         size: 95,
       }),
     ],
@@ -36,17 +37,22 @@ export const baseColumns = [
   columnHelper.accessor((row) => row.wins / (row.wins + row.losses), {
     id: "winPercentage",
     header: "Win %",
-    cell: (info) => formatWinPercentage(info.getValue()),
+    cell: (info) => winPercentage(info.getValue()),
     size: 95,
   }),
   columnHelper.accessor("championship", { header: "Championship", size: 400 }),
 ];
 
-function formatSpread(n: number) {
-  return n > 0 ? `+${n}` : String(n);
-}
-
-function formatWinPercentage(n: number) {
-  if (isNaN(n)) return "-";
-  return `${(n * 100).toFixed(1)}%`;
+export function buildTitleColumns(championships: Championship[]) {
+  return columnHelper.group({
+		header: "Title History",
+		columns: championships.map((c) => 
+			columnHelper.accessor((row) => row.titleHistory[c.id] ?? 0, {
+				id: `title-${c.id}`,
+				header: shortTitleName(c.name),
+				size: 175,
+				cell: (info) => hideZero(info.getValue()),
+			})
+		),
+	});
 }
