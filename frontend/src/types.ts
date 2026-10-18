@@ -1,20 +1,23 @@
-export interface Superstar {
+export interface Competitor {
 	id: number;
 	name: string;
 	overall: number;
-	gender: "M" | "F";
 	rank: number;
 	wins: number;
 	losses: number;
 	ppvWins: number;
 	ppvLosses: number;
 	championship: string | null;
-	titleHistory: TitleReigns;
+	reigns: TitleReigns;
 }
 
-export interface TagTeam {
-	id: number;
-	name: string;
+export type Gender = "M" | "F";
+
+export interface Superstar extends Competitor {
+	gender: Gender;
+}
+
+export interface TagTeam extends Competitor {
 	members: Superstar[];
 }
 

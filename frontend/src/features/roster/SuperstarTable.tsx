@@ -1,35 +1,20 @@
 import DataTable from "../../components/DataTable/DataTable";
 import { rosterApi } from "../../api/rosterApi";
 import { useFetch } from "../../hooks/useFetch";
-import { baseColumns, buildTitleColumns } from "./columns/superstarColumns";
+import { baseColumns, buildSuperstarTitleColumns } from "./columns/superstarColumns";
 import { useMemo } from "react";
-import type { Championship } from "../../types";
+import type { Gender } from "../../types";
 
 interface SuperstarTableProps {
-  gender: "M" | "F";
+  gender: Gender;
 }
 
 export default function SuperstarTable({ gender }: SuperstarTableProps) {
   const { data, loading, error } = useFetch(() => rosterApi.getSuperstars({ gender }));
 
   const columns = useMemo(
-    () => {
-      // TODO: replace this with a call to get championships for a division from server
-      const championships: Championship[] = gender === "M"
-        ? [
-          { id: "wwe", name: "WWE Championship" },
-          { id: "universal", name: "Universal Championship" },
-          { id: "nxt", name: "NXT Championship" },
-          { id: "intercontinental", name: "Intercontinental Championship" },
-          { id: "unitedStates", name: "United States Championship" },
-        ]
-        : [
-          { id: "rawWomens", name: "RAW Women's Championship" },
-          { id: "smackdownWomens", name: "SmackDown Women's Championship" },
-          { id: "nxtWomens", name: "NXT Women's Championship" },
-        ];
-      return [...baseColumns, buildTitleColumns(championships)];
-    }, [gender]
+    () => [...baseColumns, buildSuperstarTitleColumns(gender)],
+    [gender],
   );
 
   if (loading) {
