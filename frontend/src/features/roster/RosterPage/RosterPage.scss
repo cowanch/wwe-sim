@@ -1,0 +1,33 @@
+@use "../../../styles/nav-link" as *;
+
+.roster-tabs {
+  gap: 3rem;
+  border-bottom: 0;
+  margin-bottom: 1.25rem;
+  margin-top: 1rem;
+  margin-left: 1.5rem;
+
+  .nav-link {
+    @include nav-link-text;
+    background: none;
+    border: 0;
+    padding: 0.25rem 0;
+
+    &:hover,
+    &:focus {
+      color: #ff4d4d;
+      border: 0;
+    }
+
+    &.active {
+      color: $nav-active-color;
+      background: none;
+      border: 0;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #fff;
+      outline-offset: 4px;
+    }
+  }
+}

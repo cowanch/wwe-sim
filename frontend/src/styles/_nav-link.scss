@@ -1,0 +1,15 @@
+@mixin nav-link-text {
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.25rem;
+  letter-spacing: 0.05rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color 0.15s;
+
+  &:hover {
+    color: #ff4d4d;
+  }
+}
+
+$nav-active-color: #e8141c;

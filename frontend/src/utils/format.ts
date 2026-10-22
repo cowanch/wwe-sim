@@ -19,5 +19,9 @@ export function spread(n: number) {
 
 export function winPercentage(n: number) {
   if (isNaN(n)) return "-";
-  return `${(n * 100).toFixed(1)}%`;
+	return `${twoDecimal(n * 100)}`;
+}
+
+export function twoDecimal(n: number) {
+	return Number(n.toFixed(2));
 }

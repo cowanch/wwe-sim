@@ -65,6 +65,10 @@ body {
   margin: 0;
 }
 
+main {
+  background: black;
+}
+
 h1,
 h2 {
   font-family: var(--heading);

@@ -1,6 +1,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
-import type { Championship, Competitor } from "../../../types";
-import { hideZero, shortTitleName, spread, winPercentage } from "../../../utils/format";
+import type { Championship, Competitor } from "@/types";
+import { hideZero, shortTitleName, spread, twoDecimal, winPercentage } from "@/utils/format";
 
 export function createCompetitorColumns<T extends Competitor>() {
   const helper = createColumnHelper<T>();
@@ -16,12 +16,14 @@ export function createCompetitorColumns<T extends Competitor>() {
       id: "overall",
       header: "Overall",
       size: 95,
+      cell: (info) => twoDecimal(info.getValue()),
     }),
 
     rank: helper.accessor((row) => row.rank, {
       id: "rank",
       header: "Rank",
       size: 95,
+      cell: (info) => twoDecimal(info.getValue()),
     }),
 
     totalWinLoss: helper.group({

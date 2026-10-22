@@ -1,0 +1,20 @@
+@use "../../styles/nav-link" as *;
+
+.top-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  gap: 4rem;
+  padding: 1rem 0;
+  background: linear-gradient(#0d1522, #0d1522ee);
+
+  a {
+    @include nav-link-text;
+
+    &.active {
+      color: #e8141c;
+    }
+  }
+}

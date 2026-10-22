@@ -7,50 +7,69 @@ $cell-border: #2e2e2e;
 $hover-bg: #c4281f;
 $hover-border: #e0584f;
 
+.data-table-scroll {
+  max-height: 85vh;
+  overflow: auto;
+}
+
 .data-table {
-	table-layout: fixed;
-	width: 100%;
-	margin: 0 auto;
-	border-collapse: separate;
-	border-spacing: 2px;
-	background: #3b3b3b;
-	border: 2px solid $border-light;
-	border-radius: 4px;
-	color: #fff;
-	text-align: center;
-	font-family: "Trebuchet MS", "Segoe UI", sans-serif;
-	font-weight: 700;
-	letter-spacing: 0.5px;
+  table-layout: fixed;
+  width: 100%;
+  margin: 0 auto;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #3b3b3b;
+  border-radius: 4px;
+  color: #fff;
+  text-align: center;
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
 
-	th {
-		padding: 0.5rem 0.75rem;
-		background: linear-gradient($header-top, $header-bottom);
-		border: 1px solid $header-border;
-		cursor: pointer;
-		user-select: none;
-	}
+  --header-row-height: 2.6rem;
 
-	td {
-		padding: 0.4rem 0.75rem;
-		background: $cell-bg;
-		border: 1px solid $cell-border;
-		transition: background-color 0.08s;
-	}
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    height: var(--header-row-height);
+    box-sizing: border-box;
+  }
 
-	tbody tr:hover td {
-		background-color: $hover-bg;
-		border-color: $hover-border;
-	}
+  // Second header row (the sub-columns under "Total", "PPV", etc.)
+  thead th[data-header-row="1"] {
+    top: var(--header-row-height);
+  }
 
-	td.split-cell {
-		padding: 0;
-	}
+  th {
+    padding: 0.5rem 0.75rem;
+    background: linear-gradient($header-top, $header-bottom);
+    border: 1px solid $header-border;
+    cursor: pointer;
+    user-select: none;
+  }
 
-	.split__item {
-		padding: 0.4rem 0.75rem;
+  td {
+    padding: 0.4rem 0.75rem;
+    background: $cell-bg;
+    border: 1px solid $cell-border;
+    transition: background-color 0.08s;
+  }
 
-		& + & {
-			border-top: 1px solid $cell-border;
-		}
-	}
+  tbody tr:hover td {
+    background-color: $hover-bg;
+    border-color: $hover-border;
+  }
+
+  td.split-cell {
+    padding: 0;
+  }
+
+  .split__item {
+    padding: 0.4rem 0.75rem;
+
+    & + & {
+      border-top: 1px solid $cell-border;
+    }
+  }
 }

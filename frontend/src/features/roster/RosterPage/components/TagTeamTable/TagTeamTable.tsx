@@ -1,6 +1,6 @@
-import DataTable from "../../components/DataTable/DataTable";
-import { rosterApi } from "../../api/rosterApi";
-import { useFetch } from "../../hooks/useFetch";
+import DataTable from "@/components/DataTable/DataTable";
+import { rosterApi } from "@/api/rosterApi";
+import { useFetch } from "@/hooks/useFetch";
 import { baseColumns, buildTagTeamTitleColumns } from "./columns/tagTeamColumns";
 import { useMemo } from "react";
 

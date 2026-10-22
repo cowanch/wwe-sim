@@ -1,5 +1,6 @@
-import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+import { fileURLToPath } from "url";
 
 export default defineConfig({
   plugins: [react()],
@@ -8,4 +9,9 @@ export default defineConfig({
       "/api": "http://localhost:3000",
     },
   },
+  resolve: {
+    alias: {
+      "@": fileURLToPath(new URL("./src", import.meta.url))
+    }
+  }
 });

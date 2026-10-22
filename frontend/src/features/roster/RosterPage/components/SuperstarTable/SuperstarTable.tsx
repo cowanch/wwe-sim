@@ -1,9 +1,9 @@
-import DataTable from "../../components/DataTable/DataTable";
-import { rosterApi } from "../../api/rosterApi";
-import { useFetch } from "../../hooks/useFetch";
+import { rosterApi } from "@/api/rosterApi";
+import DataTable from "@/components/DataTable";
+import { useFetch } from "@/hooks/useFetch";
+import type { Gender } from "@/types";
 import { baseColumns, buildSuperstarTitleColumns } from "./columns/superstarColumns";
 import { useMemo } from "react";
-import type { Gender } from "../../types";
 
 interface SuperstarTableProps {
   gender: Gender;

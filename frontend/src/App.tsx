@@ -1,11 +1,17 @@
+import { Navigate, Route, Routes } from "react-router-dom";
+import NavBar from "./components/NavBar";
 import RosterPage from "./features/roster/RosterPage";
 
 export default function App() {
   return (
-    <main>
-      <h1>WWE Sim</h1>
-      <h2>Roster</h2>
-      <RosterPage />
-    </main>
+    <>
+      <NavBar />
+      <main>
+        <Routes>
+          <Route path="/" element={<Navigate to="/roster" replace />} />
+          <Route path="/roster" element={<RosterPage />} />
+        </Routes>
+      </main>
+    </>
   );
 }

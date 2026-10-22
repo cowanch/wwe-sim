@@ -9,7 +9,7 @@ export async function getAll() {
 		include: {
 			members: {
 				orderBy: { order: "asc" },
-				include: { superstar: { select: { id: true, name: true } } },
+				include: { superstar: { select: { id: true, name: true, overall: true } } },
 			}
 		},
 	});
