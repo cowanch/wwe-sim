@@ -26,6 +26,18 @@ export function createCompetitorColumns<T extends Competitor>() {
       cell: (info) => twoDecimal(info.getValue()),
     }),
 
+    con: helper.accessor((row) => row.con, {
+      id: "con",
+      header: "Con",
+      size: 95,
+    }),
+
+    elim: helper.accessor((row) => row.elim, {
+      id: "elim",
+      header: "Elim",
+      size: 95,
+    }),
+
     totalWinLoss: helper.group({
       header: "Total",
       columns: [

@@ -13,9 +13,17 @@ interface DataTableProps<T> {
 	data: T[];
 	columns: ColumnDef<T, any>[];
 	defaultSorting?: SortingState;
+  sortable?: boolean;
+  banner?: string;
 }
 
-export default function DataTable<T>({ data, columns, defaultSorting }: DataTableProps<T>) {
+export default function DataTable<T>({
+  data,
+  columns,
+  defaultSorting,
+  sortable = true,
+  banner
+}: DataTableProps<T>) {
   const [sorting, setSorting] = useState<SortingState>(defaultSorting || []);
 
   const table = useReactTable<T>({
@@ -23,6 +31,7 @@ export default function DataTable<T>({ data, columns, defaultSorting }: DataTabl
     columns,
     state: { sorting },
     onSortingChange: setSorting,
+    enableSorting: sortable,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
   });
@@ -41,6 +50,11 @@ export default function DataTable<T>({ data, columns, defaultSorting }: DataTabl
           ))}
         </colgroup>
         <thead>
+          {banner && (
+            <tr className="banner-row">
+              <th colSpan={table.getVisibleLeafColumns().length}>{banner}</th>
+            </tr>
+          )}
           {headerGroups.map((headerGroup, rowIndex) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => {

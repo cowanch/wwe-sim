@@ -1,5 +1,5 @@
 import type { Championship, Gender, Superstar } from "@/types";
-import { createCompetitorColumns } from "../../columns/competitorColumns";
+import { createCompetitorColumns } from "./competitorColumns";
 
 const c = createCompetitorColumns<Superstar>();
 

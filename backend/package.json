@@ -11,7 +11,8 @@
     "db:start": "docker start wwe-sim-db",
     "db:stop": "docker stop wwe-sim-db",
     "db:seed": "prisma db seed",
-    "db:reset": "prisma migrate reset --force"
+    "db:reset": "prisma migrate reset --force",
+    "db:studio": "prisma studio"
   },
   "keywords": [],
   "author": "",

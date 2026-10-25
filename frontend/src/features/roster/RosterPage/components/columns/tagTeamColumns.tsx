@@ -1,5 +1,5 @@
 import { createColumnHelper, type ColumnDef } from "@tanstack/react-table";
-import { createCompetitorColumns } from "../../columns/competitorColumns";
+import { createCompetitorColumns } from "./competitorColumns";
 import type { Championship, TagTeam } from "@/types";
 
 const c = createCompetitorColumns<TagTeam>();

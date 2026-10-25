@@ -3,6 +3,8 @@ export interface Competitor {
 	name: string;
 	overall: number;
 	rank: number;
+	con: number;
+	elim: number;
 	wins: number;
 	losses: number;
 	ppvWins: number;
@@ -12,6 +14,8 @@ export interface Competitor {
 }
 
 export type Gender = "M" | "F";
+
+export type Brand = "RAW" | "SD" | "NXT";
 
 export interface Superstar extends Competitor {
 	gender: Gender;

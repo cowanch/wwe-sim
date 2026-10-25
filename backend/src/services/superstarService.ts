@@ -1,5 +1,5 @@
 import prisma from "../lib/prisma";
-import type { Gender } from "@prisma/client";
+import type { Brand, Gender } from "@prisma/client";
 
 interface CreateSuperstarInput {
 	name: string;
@@ -7,7 +7,12 @@ interface CreateSuperstarInput {
 	gender: Gender;
 }
 
-export async function getAll(filters: { gender?: Gender } = {}) {
+interface SuperstarFilters {
+	gender?: Gender;
+	brand?: Brand;
+}
+
+export async function getAll(filters: SuperstarFilters = {}) {
 	return prisma.superstar.findMany({
 		where: {
 			gender: filters.gender,

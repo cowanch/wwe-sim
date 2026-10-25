@@ -65,11 +65,12 @@ model TagTeamMembership {
 }
 
 model Championship {
-  id        Int       @id @default(autoincrement())
-  name      String
-  brand     Brand
-  division  Division
-  matches   MatchSideChampionship[]
+  id         Int       @id @default(autoincrement())
+  name       String
+  brand      Brand
+  division   Division
+  matches    MatchChampionship[]
+  matchSides MatchSideChampionship[]
 }
 
 model Event {
@@ -99,6 +100,7 @@ model Match {
   brandSwapIn   BrandMembership?  @relation("StartMatch")
   brandSwapOut  BrandMembership?  @relation("EndMatch")
   tournament    TournamentMatch?
+  championship  MatchChampionship?
 }
 
 model MatchSide {
@@ -113,16 +115,14 @@ model MatchSide {
   @@unique([id, matchId])
 }
 
+// If a match has a championship, it is being defended
 model MatchChampionship {
-  // matchSideId     Int          @unique
-  // matchSide       MatchSide    @relation(fields: [matchSideId], references: [id])
-  matchId         Int
+  matchId         Int            @unique
   match           Match          @relation(fields: [matchId], references: [id])
   
   championshipId  Int
   championship    Championship @relation(fields: [championshipId], references: [id])
-  defending       Boolean
-  // @@id([matchSideId, championshipId])
+  @@id([matchId, championshipId])
 }
 
 model MatchSideChampionship {
@@ -130,8 +130,7 @@ model MatchSideChampionship {
   matchSide       MatchSide    @relation(fields: [matchSideId], references: [id])
   championshipId  Int
   championship    Championship @relation(fields: [championshipId], references: [id])
-  defending       Boolean
-  // @@id([matchSideId, championshipId])
+  @@id([matchSideId, championshipId])
 }
 
 model BrandMembership {
