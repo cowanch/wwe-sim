@@ -35,6 +35,24 @@ enum Phase {
   TOURNAMENT
 }
 
+enum WeekOfMonth {
+  FIRST
+  SECOND
+  THIRD
+  FOURTH
+  LAST
+}
+
+enum Weekday {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
 model Superstar {
   id            Int        @id @default(autoincrement())
   name          String
@@ -64,22 +82,15 @@ model TagTeamMembership {
   @@id([superstarId, tagTeamId])
 }
 
-model Championship {
-  id         Int       @id @default(autoincrement())
-  name       String
-  brand      Brand
-  division   Division
-  matches    MatchChampionship[]
-  matchSides MatchSideChampionship[]
-}
-
-model Event {
-  id           Int        @id @default(autoincrement())
-  name         String
-  date         DateTime
-  brands       Brand[]
-  matches      Match[]
-  tournaments  Tournament[]
+model Title {
+  id              Int       @id @default(autoincrement())
+  name            String
+  isChampionship  Boolean
+  brand           Brand?
+  division        Division?
+  matches         MatchTitle[]
+  matchSides      MatchSideTitle[]
+  tournaments     Tournament[]
 }
 
 // Single, Tag Team, Battle Royal, Elimination Chamber, Royal Rumble, Money in the Bank, Ladder, TLC
@@ -91,16 +102,16 @@ model MatchType {
 
 model Match {
   id            Int        @id @default(autoincrement())
-  eventId       Int
-  event         Event      @relation(fields: [eventId], references: [id])
   phase         Phase
+  cycleId       Int
+  cycle         PpvCycle  @relation(fields: [cycleId], references: [id])
   matchTypeId   Int
   matchType     MatchType  @relation(fields: [matchTypeId], references: [id])
   sides         MatchSide[]
   brandSwapIn   BrandMembership?  @relation("StartMatch")
   brandSwapOut  BrandMembership?  @relation("EndMatch")
   tournament    TournamentMatch?
-  championship  MatchChampionship?
+  title         MatchTitle?
 }
 
 model MatchSide {
@@ -111,26 +122,25 @@ model MatchSide {
   tagTeamId     Int?
   tagTeam       TagTeam?    @relation(fields: [tagTeamId], references: [id])
   winner        Boolean
-  championship  MatchSideChampionship?
+  title         MatchSideTitle?
   @@unique([id, matchId])
 }
 
-// If a match has a championship, it is being defended
-model MatchChampionship {
+// If a match has a title, it is being defended
+model MatchTitle {
   matchId         Int            @unique
   match           Match          @relation(fields: [matchId], references: [id])
-  
-  championshipId  Int
-  championship    Championship @relation(fields: [championshipId], references: [id])
-  @@id([matchId, championshipId])
+  titleId         Int
+  title    Title @relation(fields: [titleId], references: [id])
+  @@id([matchId, titleId])
 }
 
-model MatchSideChampionship {
+model MatchSideTitle {
   matchSideId     Int          @unique
   matchSide       MatchSide    @relation(fields: [matchSideId], references: [id])
-  championshipId  Int
-  championship    Championship @relation(fields: [championshipId], references: [id])
-  @@id([matchSideId, championshipId])
+  titleId  Int
+  title    Title @relation(fields: [titleId], references: [id])
+  @@id([matchSideId, titleId])
 }
 
 model BrandMembership {
@@ -150,8 +160,8 @@ model BrandMembership {
 model Tournament {
   id       Int         @id @default(autoincrement())
   name     String
-  eventId  Int
-  event    Event       @relation(fields: [eventId], references: [id])
+  titleId  Int
+  title    Title @relation(fields: [titleId], references: [id])
   matches  TournamentMatch[]
   seeds    TournamentSeed[]
 }
@@ -174,4 +184,23 @@ model TournamentSeed {
   tagTeam       TagTeam?    @relation(fields: [tagTeamId], references: [id])
   seedNumber    Int
   @@id([tournamentId, seedNumber])
+}
+
+model Ppv {
+  id      Int     @id @default(autoincrement())
+  name    String
+  month   Int
+  week    WeekOfMonth
+  day     Weekday
+  brands  Brand[]
+  cycles  PpvCycle[]
+}
+
+model PpvCycle {
+  id      Int   @id @default(autoincrement())
+  ppvId   Int
+  ppv     Ppv @relation(fields: [ppvId], references: [id])
+  year    Int
+  matches Match[]
+  brands  Brand[]
 }

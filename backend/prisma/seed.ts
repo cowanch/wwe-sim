@@ -4,19 +4,27 @@ const prisma = new PrismaClient();
 
 async function main() {
 
-  const titles = await prisma.championship.createManyAndReturn({
+  const titles = await prisma.title.createManyAndReturn({
     data: [
-      { name: "WWE Championship", brand: "SMACKDOWN", division: "MAIN_EVENT" },
-      { name: "Universal Championship", brand: "RAW", division: "MAIN_EVENT" },
-      { name: "NXT Championship", brand: "NXT", division: "MAIN_EVENT" },
-      { name: "Intercontinental Championship", brand: "RAW", division: "MID_CARD" },
-      { name: "United States Championship", brand: "SMACKDOWN", division: "MID_CARD" },
-      { name: "Raw Women's Championship", brand: "RAW", division: "WOMENS" },
-      { name: "SmackDown Women's Championship", brand: "SMACKDOWN", division: "WOMENS" },
-      { name: "NXT Women's Championship", brand: "NXT", division: "WOMENS" },
-      { name: "Raw Tag Team Championship", brand: "RAW", division: "TAG_TEAM" },
-      { name: "SmackDown Tag Team Championship", brand: "SMACKDOWN", division: "TAG_TEAM" },
-      { name: "NXT Tag Team Championship", brand: "NXT", division: "TAG_TEAM" },
+      { name: "WWE Championship", brand: "SMACKDOWN", division: "MAIN_EVENT", isChampionship: true },
+      { name: "Universal Championship", brand: "RAW", division: "MAIN_EVENT", isChampionship: true },
+      { name: "NXT Championship", brand: "NXT", division: "MAIN_EVENT", isChampionship: true },
+      { name: "Intercontinental Championship", brand: "RAW", division: "MID_CARD", isChampionship: true },
+      { name: "United States Championship", brand: "SMACKDOWN", division: "MID_CARD", isChampionship: true },
+      { name: "Raw Women's Championship", brand: "RAW", division: "WOMENS", isChampionship: true },
+      { name: "SmackDown Women's Championship", brand: "SMACKDOWN", division: "WOMENS", isChampionship: true },
+      { name: "NXT Women's Championship", brand: "NXT", division: "WOMENS", isChampionship: true },
+      { name: "Raw Tag Team Championship", brand: "RAW", division: "TAG_TEAM", isChampionship: true },
+      { name: "SmackDown Tag Team Championship", brand: "SMACKDOWN", division: "TAG_TEAM", isChampionship: true },
+      { name: "NXT Tag Team Championship", brand: "NXT", division: "TAG_TEAM", isChampionship: true },
+      { name: "Men's Royal Rumble Winner", isChampionship: false },
+      { name: "Women's Royal Rumble Winner", isChampionship: false },
+      { name: "Men's Elimination Chamber Winner", isChampionship: false },
+      { name: "Women's Elimination Chamber Winner", isChampionship: false },
+      { name: "Mr. Money in the Bank", isChampionship: false },
+      { name: "Ms. Money in the Bank", isChampionship: false },
+      { name: "King of the Ring", isChampionship: false },
+      { name: "Queen of the Ring", isChampionship: false },
     ]
   });
 
@@ -269,11 +277,109 @@ async function main() {
   await prisma.tagTeamMembership.createMany({
     data: teamMemberData
   });
+
+  await prisma.ppv.createMany({
+    data: [
+      { name: "NXT TakeOver: San Antonio", month: 1, week: "FOURTH", day: "SATURDAY", brands: ["NXT"] },
+      { name: "Royal Rumble", month: 1, week: "FOURTH", day: "SUNDAY", brands: ["RAW", "SMACKDOWN"] },
+      { name: "Elimination Chamber", month: 2, week: "SECOND", day: "SUNDAY", brands: ["SMACKDOWN"] },
+      { name: "Fastlane", month: 3, week: "FIRST", day: "SUNDAY", brands: ["RAW"] },
+      { name: "NXT TakeOver: Orlando", month: 4, week: "FIRST", day: "SATURDAY", brands: ["NXT"] },
+      { name: "WrestleMania", month: 4, week: "FIRST", day: "SUNDAY", brands: ["RAW", "SMACKDOWN"] },
+      { name: "Payback", month: 4, week: "LAST", day: "SUNDAY", brands: ["SMACKDOWN"] },
+      { name: "Extreme Rules", month: 6, week: "FIRST", day: "SUNDAY", brands: ["RAW"] },
+      { name: "NXT TakeOver", month: 6, week: "THIRD", day: "SATURDAY", brands: ["NXT"] },
+      { name: "Money in the Bank", month: 6, week: "THIRD", day: "SUNDAY", brands: ["RAW", "SMACKDOWN"] },
+      { name: "King and Queen of the Ring", month: 6, week: "FOURTH", day: "SUNDAY", brands: [] },
+      { name: "Great Balls of Fire", month: 7, week: "SECOND", day: "SUNDAY", brands: ["RAW"] },
+      { name: "Battleground", month: 7, week: "FOURTH", day: "SUNDAY", brands: ["SMACKDOWN"] },
+      { name: "NXT TakeOver: Brooklyn", month: 8, week: "THIRD", day: "SATURDAY", brands: ["NXT"] },
+      { name: "SummerSlam", month: 8, week: "THIRD", day: "SUNDAY", brands: ["RAW", "SMACKDOWN"] },
+      { name: "Backlash", month: 9, week: "SECOND", day: "SUNDAY", brands: ["SMACKDOWN"] },
+      { name: "Clash of Champions", month: 9, week: "FOURTH", day: "SUNDAY", brands: ["RAW"] },
+      { name: "No Mercy", month: 10, week: "SECOND", day: "SUNDAY", brands: ["SMACKDOWN"] },
+      { name: "Hell in a Cell", month: 10, week: "LAST", day: "SUNDAY", brands: ["RAW"] },
+      { name: "NXT TakeOver", month: 11, week: "THIRD", day: "SATURDAY", brands: ["NXT"] },
+      { name: "Survivor Series", month: 11, week: "THIRD", day: "SUNDAY", brands: ["RAW", "SMACKDOWN"] },
+      { name: "TLC: Tables, Ladders & Chairs", month: 12, week: "FIRST", day: "SUNDAY", brands: ["SMACKDOWN"] },
+      { name: "Roadblock: End of the Line", month: 12, week: "THIRD", day: "SUNDAY", brands: ["RAW"] },
+    ]
+  });
+
+  const takeoverId = getItemByName(await prisma.ppv.findMany(), "NXT TakeOver: Brooklyn").id;
+  const summerslamId = getItemByName(await prisma.ppv.findMany(), "SummerSlam").id;
+  const year = 2016;
+
+  await prisma.ppvCycle.createMany({
+    data: [
+      {
+        ppvId: takeoverId,
+        year: year,
+        brands: ["NXT"],
+      },
+      {
+        ppvId: summerslamId,
+        year: year,
+        brands: ["RAW", "SMACKDOWN"],
+      }
+    ]
+  });
+
+  const toCycleId = getItemByPpvIdAndYear(await prisma.ppvCycle.findMany(), takeoverId, year).id;
+  const ssCycleId = getItemByPpvIdAndYear(await prisma.ppvCycle.findMany(), summerslamId, year).id;
+
+  // The first SummerSlam cycle will be a series of tournaments to determine the champions for each title.
+  // The winners of these tournaments will then face off in a final match at SummerSlam to determine the overall champion for each title.
+  await prisma.tournament.createMany({
+    data: [
+      {
+        name: "WWE Championship Tournament",
+        titleId: getItemByName(titles, "WWE Championship").id,
+        seeds: [
+          { superstarId: getItemByName(superstars, "Brock Lesnar").id, seedNumber: 1 },
+          { superstarId: getItemByName(superstars, "John Cena").id, seedNumber: 2 },
+          { superstarId: getItemByName(superstars, "Goldberg").id, seedNumber: 3 },
+          { superstarId: getItemByName(superstars, "Seth Rollins").id, seedNumber: 4 },
+          { superstarId: getItemByName(superstars, "Eddie Guerrero").id, seedNumber: 5 },
+          { superstarId: getItemByName(superstars, "Edge").id, seedNumber: 6 },
+          { superstarId: getItemByName(superstars, "Dusty Rhodes").id, seedNumber: 7 },
+          { superstarId: getItemByName(superstars, "Randy Orton").id, seedNumber: 8 },
+        ]
+      }
+    ]
+  });
+
+
+//   model Tournament {
+//   id       Int         @id @default(autoincrement())
+//   name     String
+//   titleId  Int
+//   title    Title @relation(fields: [titleId], references: [id])
+//   matches  TournamentMatch[]
+//   seeds    TournamentSeed[]
+// }
+
+// model TournamentSeed {
+//   tournamentId  Int
+//   tournament    Tournament  @relation(fields: [tournamentId], references: [id])
+//   superstarId   Int?
+//   superstar     Superstar?  @relation(fields: [superstarId], references: [id])
+//   tagTeamId     Int?
+//   tagTeam       TagTeam?    @relation(fields: [tagTeamId], references: [id])
+//   seedNumber    Int
+//   @@id([tournamentId, seedNumber])
+// }
 }
 
 function getItemByName(list: Array<{ name: string, id: number }>, name: string) {
   const item = list.find(i => i.name === name);
   if (!item) throw new Error(`Failed to find item: ${name}`);
+  return item;
+}
+
+function getItemByPpvIdAndYear(list: Array<{ ppvId: number, year: number, id: number }>, ppvId: number, year: number) {
+  const item = list.find(i => i.ppvId === ppvId && i.year === year);
+  if (!item) throw new Error(`Failed to find item: ${ppvId} ${year}`);
   return item;
 }
 

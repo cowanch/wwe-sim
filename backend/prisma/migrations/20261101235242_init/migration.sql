@@ -48,16 +48,6 @@ CREATE TABLE "Championship" (
 );
 
 -- CreateTable
-CREATE TABLE "Event" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "date" TIMESTAMP(3) NOT NULL,
-    "brands" "Brand"[],
-
-    CONSTRAINT "Event_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
 CREATE TABLE "MatchType" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -68,8 +58,8 @@ CREATE TABLE "MatchType" (
 -- CreateTable
 CREATE TABLE "Match" (
     "id" SERIAL NOT NULL,
-    "eventId" INTEGER NOT NULL,
     "phase" "Phase" NOT NULL,
+    "cycleId" INTEGER NOT NULL,
     "matchTypeId" INTEGER NOT NULL,
 
     CONSTRAINT "Match_pkey" PRIMARY KEY ("id")
@@ -86,10 +76,17 @@ CREATE TABLE "MatchSide" (
 );
 
 -- CreateTable
+CREATE TABLE "MatchChampionship" (
+    "matchId" INTEGER NOT NULL,
+    "championshipId" INTEGER NOT NULL,
+
+    CONSTRAINT "MatchChampionship_pkey" PRIMARY KEY ("matchId","championshipId")
+);
+
+-- CreateTable
 CREATE TABLE "MatchSideChampionship" (
     "matchSideId" INTEGER NOT NULL,
     "championshipId" INTEGER NOT NULL,
-    "defending" BOOLEAN NOT NULL,
 
     CONSTRAINT "MatchSideChampionship_pkey" PRIMARY KEY ("matchSideId","championshipId")
 );
@@ -111,7 +108,6 @@ CREATE TABLE "BrandMembership" (
 CREATE TABLE "Tournament" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "eventId" INTEGER NOT NULL,
 
     CONSTRAINT "Tournament_pkey" PRIMARY KEY ("id")
 );
@@ -137,6 +133,28 @@ CREATE TABLE "TournamentSeed" (
 );
 
 -- CreateTable
+CREATE TABLE "Ppv" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "month" INTEGER NOT NULL,
+    "week" INTEGER NOT NULL,
+    "day" TEXT NOT NULL,
+    "brands" "Brand"[],
+
+    CONSTRAINT "Ppv_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PpvCycle" (
+    "id" SERIAL NOT NULL,
+    "ppvId" INTEGER NOT NULL,
+    "year" INTEGER NOT NULL,
+    "brands" "Brand"[],
+
+    CONSTRAINT "PpvCycle_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "_MatchSideToSuperstar" (
     "A" INTEGER NOT NULL,
     "B" INTEGER NOT NULL,
@@ -149,6 +167,9 @@ CREATE UNIQUE INDEX "TagTeamMembership_superstarId_key" ON "TagTeamMembership"("
 
 -- CreateIndex
 CREATE UNIQUE INDEX "MatchSide_id_matchId_key" ON "MatchSide"("id", "matchId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "MatchChampionship_matchId_key" ON "MatchChampionship"("matchId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "MatchSideChampionship_matchSideId_key" ON "MatchSideChampionship"("matchSideId");
@@ -172,7 +193,7 @@ ALTER TABLE "TagTeamMembership" ADD CONSTRAINT "TagTeamMembership_superstarId_fk
 ALTER TABLE "TagTeamMembership" ADD CONSTRAINT "TagTeamMembership_tagTeamId_fkey" FOREIGN KEY ("tagTeamId") REFERENCES "TagTeam"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Match" ADD CONSTRAINT "Match_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Match" ADD CONSTRAINT "Match_cycleId_fkey" FOREIGN KEY ("cycleId") REFERENCES "PpvCycle"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Match" ADD CONSTRAINT "Match_matchTypeId_fkey" FOREIGN KEY ("matchTypeId") REFERENCES "MatchType"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -182,6 +203,12 @@ ALTER TABLE "MatchSide" ADD CONSTRAINT "MatchSide_matchId_fkey" FOREIGN KEY ("ma
 
 -- AddForeignKey
 ALTER TABLE "MatchSide" ADD CONSTRAINT "MatchSide_tagTeamId_fkey" FOREIGN KEY ("tagTeamId") REFERENCES "TagTeam"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MatchChampionship" ADD CONSTRAINT "MatchChampionship_matchId_fkey" FOREIGN KEY ("matchId") REFERENCES "Match"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "MatchChampionship" ADD CONSTRAINT "MatchChampionship_championshipId_fkey" FOREIGN KEY ("championshipId") REFERENCES "Championship"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "MatchSideChampionship" ADD CONSTRAINT "MatchSideChampionship_matchSideId_fkey" FOREIGN KEY ("matchSideId") REFERENCES "MatchSide"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -202,9 +229,6 @@ ALTER TABLE "BrandMembership" ADD CONSTRAINT "BrandMembership_startMatchId_fkey"
 ALTER TABLE "BrandMembership" ADD CONSTRAINT "BrandMembership_endMatchId_fkey" FOREIGN KEY ("endMatchId") REFERENCES "Match"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Tournament" ADD CONSTRAINT "Tournament_eventId_fkey" FOREIGN KEY ("eventId") REFERENCES "Event"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "TournamentMatch" ADD CONSTRAINT "TournamentMatch_tournamentId_fkey" FOREIGN KEY ("tournamentId") REFERENCES "Tournament"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
@@ -218,6 +242,9 @@ ALTER TABLE "TournamentSeed" ADD CONSTRAINT "TournamentSeed_superstarId_fkey" FO
 
 -- AddForeignKey
 ALTER TABLE "TournamentSeed" ADD CONSTRAINT "TournamentSeed_tagTeamId_fkey" FOREIGN KEY ("tagTeamId") REFERENCES "TagTeam"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PpvCycle" ADD CONSTRAINT "PpvCycle_ppvId_fkey" FOREIGN KEY ("ppvId") REFERENCES "Ppv"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_MatchSideToSuperstar" ADD CONSTRAINT "_MatchSideToSuperstar_A_fkey" FOREIGN KEY ("A") REFERENCES "MatchSide"("id") ON DELETE CASCADE ON UPDATE CASCADE;
