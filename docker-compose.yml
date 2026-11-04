@@ -1,0 +1,15 @@
+services:
+  db:
+    image: postgres:16
+    container_name: wwe-sim-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: devpass
+      POSTGRES_DB: wwe_sim
+    ports:
+      - "5432:5432"
+    volumes:
+      - wwe-sim-data:/var/lib/postgresql/data
+
+volumes:
+  wwe-sim-data:

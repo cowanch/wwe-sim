@@ -347,7 +347,203 @@ async function main() {
         ]
       }
     ]
-  });
+  }); 
+ 
+  const tournaments = [
+    {
+      name: "WWE Championship Tournament",
+      title: "WWE Championship",
+      seeds: [
+        "Brock Lesnar",
+        "John Cena",
+        "Goldberg",
+        "Seth Rollins",
+        "Eddie Guerrero",
+        "Edge",
+        "Dusty Rhodes",
+        "Randy Orton",
+      ],
+    },
+    {
+      name: "Universal Championship Tournament",
+      title: "Universal Championship",
+      seeds: [
+        "Roman Reigns",
+        "The Rock",
+        "Bret Hart",
+        "Steve Austin",
+        "Daniel Bryan",
+        "Ultimate Warrior",
+        "AJ Styles",
+        "Randy Savage",
+      ],
+    },
+//     {
+//       name: "NXT Championship Tournament",
+//       title: "NXT Championship",
+//       seeds: [
+//         Booker T
+
+	
+// 2
+	
+// Chris Jericho
+
+	
+// 3
+	
+// Jake Roberts
+
+	
+// 4
+	
+// The Miz
+
+	
+// 5
+	
+// JBL
+
+	
+// 6
+	
+// Mr. Perfect
+
+	
+// 7
+	
+// Bam Bam Bigelow
+
+	
+// 8
+	
+// Bobby Roode
+
+	
+// 9
+	
+// Bray Wyatt
+
+	
+// 10
+	
+// Christian
+
+	
+// 11
+	
+// Baron Corbin
+
+	
+// 12
+	
+// Neville
+
+	
+// 13
+	
+// Rusev
+
+	
+// 14
+	
+// Sami Zayn
+
+	
+// 15
+	
+// Shane McMahon
+
+	
+// 16
+	
+// Dolph Ziggler
+
+	
+// 17
+	
+// Rikishi
+
+	
+// 18
+	
+// Albert
+
+	
+// 19
+	
+// Big Show
+
+	
+// 20
+	
+// Mark Henry
+
+	
+// 21
+	
+// Kassius Ohno
+
+	
+// 22
+	
+// Roderick Strong
+
+	
+// 23
+	
+// Tye Dillinger
+
+	
+// 24
+	
+// No Way Jose
+
+	
+// 25
+	
+// TJP
+
+	
+// 26
+	
+// Darren Young
+
+	
+// 27
+	
+// Tyson Kidd
+
+	
+// 28
+	
+// Aiden English
+
+	
+// 29
+	
+//         "Noam Dar",
+//         "Gran Metalik",
+//         "Curt Hawkins",
+//         "Sawyer Fulton",
+//       ]
+//     }
+  ];
+
+  for (const t of tournaments) {
+    await prisma.tournament.create({
+      data: {
+        name: t.name,
+        titleId: getItemByName(titles, t.title).id,
+        seeds: {
+          create: t.seeds.map((name, i) => ({
+            superstarId: getItemByName(superstars, name).id,
+            seedNumber: i + 1,
+          })),
+        },
+      },
+    });
+  }
 
 
 //   model Tournament {
