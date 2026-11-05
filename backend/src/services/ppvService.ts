@@ -31,19 +31,25 @@ export async function getById(id: number) {
 	});
 }
 
-export async function createCycle(data: CreateCycleInput) {
-  const ppv = await prisma.ppv.findFirst({
-    where: {
-      id: data.ppvId
-    }
+export async function getLatestCycles() {
+  const latest = await prisma.ppvCycle.findFirst({
+    orderBy: [
+      { year: "desc" },
+      { ppv: { month: "desc" } },
+      { ppv: { week: "desc" } },
+      { ppv: { day: "desc" } },
+    ],
+    include: { ppv: true },
   });
 
+  if (!latest) return [];
 
-
-	return prisma.ppvCycle.create({
-    data: {
-      ...data,
-
-    }
+  return prisma.ppvCycle.findMany({
+    where: {
+      year: latest.year,
+      ppv: { month: latest.ppv.month, week: latest.ppv.week },
+    },
+    orderBy: { ppv: { day: "asc" } },
+    include: { ppv: true },
   });
 }

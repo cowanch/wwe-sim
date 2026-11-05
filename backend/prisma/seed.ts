@@ -539,12 +539,6 @@ function getItemByName(list: Array<{ name: string, id: number }>, name: string) 
   return item;
 }
 
-function getItemByPpvIdAndYear(list: Array<{ ppvId: number, year: number, id: number }>, ppvId: number, year: number) {
-  const item = list.find(i => i.ppvId === ppvId && i.year === year);
-  if (!item) throw new Error(`Failed to find item: ${ppvId} ${year}`);
-  return item;
-}
-
 main()
   .then(async () => {
     await prisma.$disconnect();

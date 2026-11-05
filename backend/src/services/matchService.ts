@@ -24,6 +24,14 @@ export async function getById(id: number) {
 	});
 }
 
+export async function getScheduledMatches() {
+	return prisma.match.findMany({
+		where: {
+			sides: { none: { winner: true } },
+		},
+	});
+}
+
 export async function create(data: CreateMatchInput) {
 	return prisma.match.create({ data });
 }
