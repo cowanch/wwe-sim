@@ -11,10 +11,10 @@ async function main() {
       { name: "NXT Championship", brand: "NXT", division: "MAIN_EVENT", isChampionship: true },
       { name: "Intercontinental Championship", brand: "RAW", division: "MID_CARD", isChampionship: true },
       { name: "United States Championship", brand: "SMACKDOWN", division: "MID_CARD", isChampionship: true },
-      { name: "Raw Women's Championship", brand: "RAW", division: "WOMENS", isChampionship: true },
+      { name: "RAW Women's Championship", brand: "RAW", division: "WOMENS", isChampionship: true },
       { name: "SmackDown Women's Championship", brand: "SMACKDOWN", division: "WOMENS", isChampionship: true },
       { name: "NXT Women's Championship", brand: "NXT", division: "WOMENS", isChampionship: true },
-      { name: "Raw Tag Team Championship", brand: "RAW", division: "TAG_TEAM", isChampionship: true },
+      { name: "RAW Tag Team Championship", brand: "RAW", division: "TAG_TEAM", isChampionship: true },
       { name: "SmackDown Tag Team Championship", brand: "SMACKDOWN", division: "TAG_TEAM", isChampionship: true },
       { name: "NXT Tag Team Championship", brand: "NXT", division: "TAG_TEAM", isChampionship: true },
       { name: "Men's Royal Rumble Winner", isChampionship: false },
@@ -305,49 +305,6 @@ async function main() {
       { name: "Roadblock: End of the Line", month: 12, week: "THIRD", day: "SUNDAY", brands: ["RAW"] },
     ]
   });
-
-  const takeoverId = getItemByName(await prisma.ppv.findMany(), "NXT TakeOver: Brooklyn").id;
-  const summerslamId = getItemByName(await prisma.ppv.findMany(), "SummerSlam").id;
-  const year = 2016;
-
-  await prisma.ppvCycle.createMany({
-    data: [
-      {
-        ppvId: takeoverId,
-        year: year,
-        brands: ["NXT"],
-      },
-      {
-        ppvId: summerslamId,
-        year: year,
-        brands: ["RAW", "SMACKDOWN"],
-      }
-    ]
-  });
-
-  const toCycleId = getItemByPpvIdAndYear(await prisma.ppvCycle.findMany(), takeoverId, year).id;
-  const ssCycleId = getItemByPpvIdAndYear(await prisma.ppvCycle.findMany(), summerslamId, year).id;
-
-  // The first SummerSlam cycle will be a series of tournaments to determine the champions for each title.
-  // The winners of these tournaments will then face off in a final match at SummerSlam to determine the overall champion for each title.
-  await prisma.tournament.createMany({
-    data: [
-      {
-        name: "WWE Championship Tournament",
-        titleId: getItemByName(titles, "WWE Championship").id,
-        seeds: [
-          { superstarId: getItemByName(superstars, "Brock Lesnar").id, seedNumber: 1 },
-          { superstarId: getItemByName(superstars, "John Cena").id, seedNumber: 2 },
-          { superstarId: getItemByName(superstars, "Goldberg").id, seedNumber: 3 },
-          { superstarId: getItemByName(superstars, "Seth Rollins").id, seedNumber: 4 },
-          { superstarId: getItemByName(superstars, "Eddie Guerrero").id, seedNumber: 5 },
-          { superstarId: getItemByName(superstars, "Edge").id, seedNumber: 6 },
-          { superstarId: getItemByName(superstars, "Dusty Rhodes").id, seedNumber: 7 },
-          { superstarId: getItemByName(superstars, "Randy Orton").id, seedNumber: 8 },
-        ]
-      }
-    ]
-  }); 
  
   type TournamentType = "singles" | "tagTeam";
   const tournaments = [
@@ -542,7 +499,7 @@ async function main() {
         "SAnitY",
         "The Wyatt Family",
         "Titus Worldwide",
-        "TM61",
+        "TM-61",
         "Alexander & Swann",
         "The Colons",
         "The B-Team",
@@ -574,27 +531,6 @@ async function main() {
       },
     });
   }
-
-
-//   model Tournament {
-//   id       Int         @id @default(autoincrement())
-//   name     String
-//   titleId  Int
-//   title    Title @relation(fields: [titleId], references: [id])
-//   matches  TournamentMatch[]
-//   seeds    TournamentSeed[]
-// }
-
-// model TournamentSeed {
-//   tournamentId  Int
-//   tournament    Tournament  @relation(fields: [tournamentId], references: [id])
-//   superstarId   Int?
-//   superstar     Superstar?  @relation(fields: [superstarId], references: [id])
-//   tagTeamId     Int?
-//   tagTeam       TagTeam?    @relation(fields: [tagTeamId], references: [id])
-//   seedNumber    Int
-//   @@id([tournamentId, seedNumber])
-// }
 }
 
 function getItemByName(list: Array<{ name: string, id: number }>, name: string) {
