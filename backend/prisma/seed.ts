@@ -349,10 +349,12 @@ async function main() {
     ]
   }); 
  
+  type TournamentType = "singles" | "tagTeam";
   const tournaments = [
     {
       name: "WWE Championship Tournament",
       title: "WWE Championship",
+      type: "singles" as TournamentType,
       seeds: [
         "Brock Lesnar",
         "John Cena",
@@ -367,6 +369,7 @@ async function main() {
     {
       name: "Universal Championship Tournament",
       title: "Universal Championship",
+      type: "singles" as TournamentType,
       seeds: [
         "Roman Reigns",
         "The Rock",
@@ -378,156 +381,178 @@ async function main() {
         "Randy Savage",
       ],
     },
-//     {
-//       name: "NXT Championship Tournament",
-//       title: "NXT Championship",
-//       seeds: [
-//         Booker T
-
-	
-// 2
-	
-// Chris Jericho
-
-	
-// 3
-	
-// Jake Roberts
-
-	
-// 4
-	
-// The Miz
-
-	
-// 5
-	
-// JBL
-
-	
-// 6
-	
-// Mr. Perfect
-
-	
-// 7
-	
-// Bam Bam Bigelow
-
-	
-// 8
-	
-// Bobby Roode
-
-	
-// 9
-	
-// Bray Wyatt
-
-	
-// 10
-	
-// Christian
-
-	
-// 11
-	
-// Baron Corbin
-
-	
-// 12
-	
-// Neville
-
-	
-// 13
-	
-// Rusev
-
-	
-// 14
-	
-// Sami Zayn
-
-	
-// 15
-	
-// Shane McMahon
-
-	
-// 16
-	
-// Dolph Ziggler
-
-	
-// 17
-	
-// Rikishi
-
-	
-// 18
-	
-// Albert
-
-	
-// 19
-	
-// Big Show
-
-	
-// 20
-	
-// Mark Henry
-
-	
-// 21
-	
-// Kassius Ohno
-
-	
-// 22
-	
-// Roderick Strong
-
-	
-// 23
-	
-// Tye Dillinger
-
-	
-// 24
-	
-// No Way Jose
-
-	
-// 25
-	
-// TJP
-
-	
-// 26
-	
-// Darren Young
-
-	
-// 27
-	
-// Tyson Kidd
-
-	
-// 28
-	
-// Aiden English
-
-	
-// 29
-	
-//         "Noam Dar",
-//         "Gran Metalik",
-//         "Curt Hawkins",
-//         "Sawyer Fulton",
-//       ]
-//     }
+    {
+      name: "Intercontinental Championship Tournament",
+      title: "Intercontinental Championship",
+      type: "singles" as TournamentType,
+      seeds: [
+        "Ric Flair",
+        "Kane",
+        "Shinsuke Nakamura",
+        "Undertaker",
+        "Vader",
+        "Finn Bálor",
+        "Jinder Mahal",
+        "Sycho Sid",
+      ]
+    },
+    {
+      name: "United States Championship Tournament",
+      title: "United States Championship",
+      type: "singles" as TournamentType,
+      seeds: [
+        "Ricky Steamboat",
+        "Shawn Michaels",
+        "Sting",
+        "Triple H",
+        "Braun Strowman",
+        "Dean Ambrose",
+        "Kevin Owens",
+        "Samoa Joe",
+      ]
+    },
+    {
+      name: "RAW Women's Championship Tournament",
+      title: "RAW Women's Championship",
+      type: "singles" as TournamentType,
+      seeds: [
+        "Asuka",
+        "Charlotte Flair",
+        "Naomi",
+        "Lita",
+        "Sasha Banks",
+        "Jacqueline",
+        "Natalya",
+        "Paige",
+      ]
+    },
+    {
+      name: "SmackDown Women's Championship Tournament",
+      title: "SmackDown Women's Championship",
+      type: "singles" as TournamentType,
+      seeds: [
+        "Alexa Bliss",
+        "Alundra Blayze",
+        "Nikki Bella",
+        "Trish Stratus",
+        "Bayley",
+        "Becky Lynch",
+        "Nia Jax",
+        "Ivory",
+      ]
+    },
+    {
+      name: "RAW Tag Team Championship Tournament",
+      title: "RAW Tag Team Championship",
+      type: "tagTeam" as TournamentType,
+      seeds: [
+        "DDP & Cactus Jack",
+        "The Usos",
+        "The Bar",
+        "The Dream Team",
+        "Gallows & Anderson",
+        "The Fabulous Freebirds",
+        "Slater & Rhyno",
+        "The Hype Bros",
+      ]
+    },
+    {
+      name: "SmackDown Tag Team Championship Tournament",
+      title: "SmackDown Tag Team Championship",
+      type: "tagTeam" as TournamentType,
+      seeds: [
+        "The Outsiders",
+        "The Von Erichs",
+        "The New Day",
+        "The Hart Foundation",
+        "The Authors of Pain",
+        "The Natural Disasters",
+        "The Revival",
+        "American Alpha",
+      ]
+    },
+    {
+      name: "NXT Championship Tournament",
+      title: "NXT Championship",
+      type: "singles" as TournamentType,
+      seeds: [
+        "Booker T",
+        "Chris Jericho",
+        "Jake Roberts",
+        "The Miz",
+        "JBL",
+        "Mr. Perfect",
+        "Bam Bam Bigelow",
+        "Bobby Roode",
+        "Bray Wyatt",
+        "Christian",
+        "Baron Corbin",
+        "Neville",
+        "Rusev",
+        "Sami Zayn",
+        "Shane McMahon",
+        "Dolph Ziggler",
+        "Rikishi",
+        "Albert",
+        "Big Show",
+        "Mark Henry",
+        "Kassius Ohno",
+        "Roderick Strong",
+        "Tye Dillinger",
+        "No Way Jose",
+        "TJP",
+        "Darren Young",
+        "Tyson Kidd",
+        "Aiden English",
+        "Noam Dar",
+        "Gran Metalik",
+        "Curt Hawkins",
+        "Sawyer Fulton",
+      ]
+    },
+    {
+      name: "NXT Women's Championship Tournament",
+      title: "NXT Women's Championship",
+      type: "singles" as TournamentType,
+      seeds: [
+        "Mickie James",
+        "Carmella",
+        "Brie Bella",
+        "Ember Moon",
+        "Nikki Cross",
+        "Peyton Royce",
+        "Billie Kay",
+        "Tamina",
+        "Dana Brooke",
+        "Emma",
+        "Alicia Fox",
+        "Maryse",
+        "Summer Rae",
+      ]
+    },
+    {
+      name: "NXT Tag Team Championship Tournament",
+      title: "NXT Tag Team Championship",
+      type: "tagTeam" as TournamentType,
+      seeds: [
+        "#DIY",
+        "Itami & Tozawa",
+        "Breezango",
+        "Enzo & Cass",
+        "SAnitY",
+        "The Wyatt Family",
+        "Titus Worldwide",
+        "TM61",
+        "Alexander & Swann",
+        "The Colons",
+        "The B-Team",
+        "The Golden Truth",
+        "Kendrick & Gallagher",
+        "The Ascension",
+        "The Bushwhackers",
+        "The Lucha Dragons",
+      ]
+    },
   ];
 
   for (const t of tournaments) {
@@ -536,10 +561,15 @@ async function main() {
         name: t.name,
         titleId: getItemByName(titles, t.title).id,
         seeds: {
-          create: t.seeds.map((name, i) => ({
-            superstarId: getItemByName(superstars, name).id,
-            seedNumber: i + 1,
-          })),
+          create: t.type === "tagTeam"
+            ? t.seeds.map((name, i) => ({
+                tagTeamId: getItemByName(teams, name).id,
+                seedNumber: i + 1,
+              }))
+            : t.seeds.map((name, i) => ({
+              superstarId: getItemByName(superstars, name).id,
+              seedNumber: i + 1,
+            })),
         },
       },
     });
