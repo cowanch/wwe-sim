@@ -1,15 +1,11 @@
 import prisma from "../lib/prisma";
-import type { Brand, Gender } from "@prisma/client";
 
 interface CreateCycleInput {
 	ppvId: number;
 	year: number;
 }
 
-interface PpvFilters {
-	gender?: Gender;
-	brand?: Brand;
-}
+interface PpvFilters {}
 
 export async function getPpvById(id: number) {
   return prisma.ppv.findUnique({
@@ -29,6 +25,19 @@ export async function getById(id: number) {
 		where: { id },
 		include: { tagTeam: true, brandHistory: true },
 	});
+}
+
+export async function getPpvs(names?: string[]) {
+  return prisma.ppv.findMany({
+    where: {
+      name: { in: names },
+    },
+    orderBy: [
+      { month: "asc" },
+      { week: "asc" },
+      { day: "asc" },
+    ],
+  });
 }
 
 export async function getLatestCycles() {
