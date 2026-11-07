@@ -62,3 +62,7 @@ export async function getLatestCycles() {
     include: { ppv: true },
   });
 }
+
+export async function createPpvCycle(data: CreateCycleInput) {
+  return prisma.ppvCycle.create({ data });
+}
