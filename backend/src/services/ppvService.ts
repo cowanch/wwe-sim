@@ -1,11 +1,27 @@
+import { Prisma, WeekOfMonth, Weekday, Brand, PpvCycle } from "@prisma/client";
 import prisma from "../lib/prisma";
 
+export const cycleWithRelations = {
+  include: { ppvs: true },
+} satisfies Prisma.PpvCycleDefaultArgs;
+
+export type PpvCycleWithRelations = Prisma.PpvCycleGetPayload<
+  typeof cycleWithRelations
+>;
+
 interface CreateCycleInput {
-	ppvId: number;
+	ppvIds: number[];
+  brands: Brand[];
 	year: number;
 }
 
-interface PpvFilters {}
+// Object.values follows the enum declaration order, so these stay in sync with the schema
+const WEEKS = Object.values(WeekOfMonth);
+const DAYS = Object.values(Weekday);
+
+function ppvRank(p: { month: number; week: WeekOfMonth; day: Weekday }) {
+  return p.month * 1000 + WEEKS.indexOf(p.week) * 10 + DAYS.indexOf(p.day);
+}
 
 export async function getPpvById(id: number) {
   return prisma.ppv.findUnique({
@@ -13,7 +29,7 @@ export async function getPpvById(id: number) {
   });
 }
 
-export async function getCycles(filters: PpvFilters = {}) {
+export async function getCycles() {
 	return prisma.ppvCycle.findMany({
 		where: {
 		},
@@ -40,29 +56,35 @@ export async function getPpvs(names?: string[]) {
   });
 }
 
-export async function getLatestCycles() {
-  const latest = await prisma.ppvCycle.findFirst({
-    orderBy: [
-      { year: "desc" },
-      { ppv: { month: "desc" } },
-      { ppv: { week: "desc" } },
-      { ppv: { day: "desc" } },
-    ],
-    include: { ppv: true },
+export async function getLatestCycle() {
+  const newest = await prisma.ppvCycle.findFirst({
+    orderBy: { year: "desc" },
+    select: { year: true },
+  });
+  if (!newest) return null;
+
+  const cycles = await prisma.ppvCycle.findMany({
+    where: { year: newest.year },
+    include: { ppvs: true },
   });
 
-  if (!latest) return [];
+  const cycleRank = (c: (typeof cycles)[number]) =>
+    Math.max(...c.ppvs.map(ppvRank));
 
-  return prisma.ppvCycle.findMany({
-    where: {
-      year: latest.year,
-      ppv: { month: latest.ppv.month, week: latest.ppv.week },
-    },
-    orderBy: { ppv: { day: "asc" } },
-    include: { ppv: true },
-  });
+  return cycles.sort((a, b) => cycleRank(b) - cycleRank(a))[0] ?? null;
 }
 
-export async function createPpvCycle(data: CreateCycleInput) {
-  return prisma.ppvCycle.create({ data });
+export async function createPpvCycle(data: CreateCycleInput): Promise<PpvCycleWithRelations> {
+  const { year, brands, ppvIds } = data;
+  const ppvs = { 
+    connect: ppvIds.map((id) => ({ id }))
+  };
+  return prisma.ppvCycle.create({
+    data: {
+      year,
+      ppvs,
+      brands,
+    },
+    include: { ppvs: true },
+  });
 }

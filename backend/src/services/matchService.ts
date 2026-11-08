@@ -1,21 +1,24 @@
 import prisma from "../lib/prisma";
-import type { Brand, Gender, Phase } from "@prisma/client";
+import type { MatchType, Phase } from "@prisma/client";
 
 interface CreateMatchInput {
   phase: Phase
   cycleId: number;
-	matchTypeId: number;
+	matchType: MatchType;
+	titleId?: number;
+	sides: MatchSideInput[];
 }
 
-//   phase         Phase
-//   cycle         PpvCycle
-//   matchTypeId   Int
-//   matchType     MatchType  @relation(fields: [matchTypeId], references: [id])
-//   sides         MatchSide[]
+interface MatchSideInput {
+	superstarIds: number[];
+	tagTeamId?: number;
+	titleId?: number;
+}
 
-interface SuperstarFilters {
-	gender?: Gender;
-	brand?: Brand;
+interface TournamentMatchInput {
+	tournamentId: number;
+	matchId: number;
+	matchNumber: number;
 }
 
 export async function getById(id: number) {
@@ -33,5 +36,30 @@ export async function getScheduledMatches() {
 }
 
 export async function create(data: CreateMatchInput) {
-	return prisma.match.create({ data });
+	const { phase, cycleId, matchType, titleId, sides } = data;
+	const createSides = sides.map((side) => ({
+		winner: false,
+		superstars: {
+			connect: side.superstarIds.map((id) => ({ id }))
+		},
+		tagTeamId: side.tagTeamId,
+		titleId: side.titleId,
+	}));
+
+	return prisma.match.create({
+		data: {
+			phase,
+			cycleId,
+			matchType,
+			titleId,
+			sides: {
+				create: createSides,
+			},
+		},
+		include: { sides: { include: { superstars: true } } },
+	});
+}
+
+export async function createTournamentMatch(data: TournamentMatchInput) {
+	return prisma.tournamentMatch.create({ data })
 }
