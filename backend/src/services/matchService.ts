@@ -1,5 +1,16 @@
 import prisma from "../lib/prisma";
-import type { MatchType, Phase } from "@prisma/client";
+import type { MatchType, Phase, Prisma } from "@prisma/client";
+
+const matchWithRelations = {
+	include: { sides: true, tournament: true },
+} satisfies Prisma.MatchDefaultArgs;
+
+const tournamentWithSeeds = {
+	include: { seeds: true },
+} satisfies Prisma.TournamentDefaultArgs;
+
+export type MatchDetailed = Prisma.MatchGetPayload<typeof matchWithRelations>;
+export type TournamentDetailed = Prisma.TournamentGetPayload<typeof tournamentWithSeeds>;
 
 interface CreateMatchInput {
   phase: Phase
@@ -27,8 +38,9 @@ export async function getById(id: number) {
 	});
 }
 
-export async function getScheduledMatches() {
+export async function getScheduledMatches(): Promise<MatchDetailed[]> {
 	return prisma.match.findMany({
+		...matchWithRelations,
 		where: {
 			sides: { none: { winner: true } },
 		},
@@ -57,6 +69,13 @@ export async function create(data: CreateMatchInput) {
 			},
 		},
 		include: { sides: { include: { superstars: true } } },
+	});
+}
+
+export async function getScheduledTournaments(): Promise<TournamentDetailed[]> {
+	return prisma.tournament.findMany({
+		...tournamentWithSeeds,
+		where: { matches: { none: {} } },
 	});
 }
 

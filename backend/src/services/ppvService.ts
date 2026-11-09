@@ -5,7 +5,7 @@ export const cycleWithRelations = {
   include: { ppvs: true },
 } satisfies Prisma.PpvCycleDefaultArgs;
 
-export type PpvCycleWithRelations = Prisma.PpvCycleGetPayload<
+export type PpvCycleDetailed = Prisma.PpvCycleGetPayload<
   typeof cycleWithRelations
 >;
 
@@ -74,7 +74,7 @@ export async function getLatestCycle() {
   return cycles.sort((a, b) => cycleRank(b) - cycleRank(a))[0] ?? null;
 }
 
-export async function createPpvCycle(data: CreateCycleInput): Promise<PpvCycleWithRelations> {
+export async function createPpvCycle(data: CreateCycleInput): Promise<PpvCycleDetailed> {
   const { year, brands, ppvIds } = data;
   const ppvs = { 
     connect: ppvIds.map((id) => ({ id }))

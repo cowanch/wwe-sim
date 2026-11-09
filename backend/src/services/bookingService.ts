@@ -17,14 +17,16 @@ export async function checkMatches() {
       throw new Error("Could not find the first PPVs");
     }
 
-    const nextCycle = ppvService.createPpvCycle({
+    const nextCycle = await ppvService.createPpvCycle({
       ppvIds: firstPpvs.map((ppv) => ppv.id),
       year: 2016,
       brands: ["RAW", "SMACKDOWN", "NXT"],
     });
 
+    const initialTournaments = await matchService.getScheduledTournaments();
+
     // The booking strategy for the first PPV will the firstPpv
-    strategyFactory.getFirstStrategy();
+    // strategyFactory.getFirstStrategy();
   }
 
   // TODO: resolve roster changes based on the last cycle

@@ -1,11 +1,10 @@
 import { Ppv } from "@prisma/client";
-import { firstPpv } from "./events/firstPpv";
-import { BookingStrategy } from "./types";
+import { PpvBooking } from "./types";
 
 export function getStrategy(ppv: Ppv) {
 
 }
 
-export function getFirstStrategy(): BookingStrategy {
-  return firstPpv;
-}
+// export function getFirstStrategy(): PpvBooking {
+//   return;
+// }

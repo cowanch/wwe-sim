@@ -1,4 +1,5 @@
-import { Division, MatchType, Phase, PpvCycle, Superstar, TagTeam } from "@prisma/client";
+import { MatchType, Phase, Superstar, Tournament } from "@prisma/client";
+import { MatchDetailed, TournamentDetailed } from "../services/matchService";
 
 export interface BookedSide {
   superstarIds: number[];
@@ -28,24 +29,17 @@ export interface BrandRoster {
   nxt?: Omit<DivisionRoster, "midCard">,
 }
 
-export interface BookingContext {
-  cycles: PpvCycle[],
-}
-
-export interface RosterBookingContext extends BookingContext {
-  
+export interface RosterContext {
+  roster: BrandRoster;
 }
 
 export interface TournamentContext {
-  id: number;
-  seeds: { seedNumber: number; superstarId?: number; tagTeamId?: number }[];
-  playedMatches: { round: number; slot: number; winnerSeed: number }[];
+  tournaments: TournamentDetailed[];
 }
 
-export interface TournamentBookingContext extends BookingContext {
-  tournaments: TournamentContext[];
-}
+export type BookingContext = RosterContext | TournamentContext;
 
-export interface BookingStrategy<C extends BookingContext = BookingContext> {
-  book(context: C): BookedMatch[];
+export interface PpvBooking<C extends BookingContext = BookingContext> {
+  bookMatches: (ctx: C) => BookedMatch[];
+  checkMatches: (matches: MatchDetailed[]) => BookedMatch[];
 }

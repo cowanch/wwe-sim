@@ -6,25 +6,25 @@ async function main() {
 
   const titles = await prisma.title.createManyAndReturn({
     data: [
-      { name: "WWE Championship", brand: "SMACKDOWN", division: "MAIN_EVENT", isChampionship: true },
-      { name: "Universal Championship", brand: "RAW", division: "MAIN_EVENT", isChampionship: true },
-      { name: "NXT Championship", brand: "NXT", division: "MAIN_EVENT", isChampionship: true },
-      { name: "Intercontinental Championship", brand: "RAW", division: "MID_CARD", isChampionship: true },
-      { name: "United States Championship", brand: "SMACKDOWN", division: "MID_CARD", isChampionship: true },
-      { name: "RAW Women's Championship", brand: "RAW", division: "WOMENS", isChampionship: true },
-      { name: "SmackDown Women's Championship", brand: "SMACKDOWN", division: "WOMENS", isChampionship: true },
-      { name: "NXT Women's Championship", brand: "NXT", division: "WOMENS", isChampionship: true },
-      { name: "RAW Tag Team Championship", brand: "RAW", division: "TAG_TEAM", isChampionship: true },
-      { name: "SmackDown Tag Team Championship", brand: "SMACKDOWN", division: "TAG_TEAM", isChampionship: true },
-      { name: "NXT Tag Team Championship", brand: "NXT", division: "TAG_TEAM", isChampionship: true },
-      { name: "Men's Royal Rumble Winner", isChampionship: false },
-      { name: "Women's Royal Rumble Winner", isChampionship: false },
-      { name: "Men's Elimination Chamber Winner", isChampionship: false },
-      { name: "Women's Elimination Chamber Winner", isChampionship: false },
-      { name: "Mr. Money in the Bank", isChampionship: false },
-      { name: "Ms. Money in the Bank", isChampionship: false },
-      { name: "King of the Ring", isChampionship: false },
-      { name: "Queen of the Ring", isChampionship: false },
+      { name: "WWE", brand: "SMACKDOWN", division: "MAIN_EVENT", isChampionship: true },
+      { name: "UNIVERSAL", brand: "RAW", division: "MAIN_EVENT", isChampionship: true },
+      { name: "NXT", brand: "NXT", division: "MAIN_EVENT", isChampionship: true },
+      { name: "INTERCONTINENTAL", brand: "RAW", division: "MID_CARD", isChampionship: true },
+      { name: "UNITED_STATES", brand: "SMACKDOWN", division: "MID_CARD", isChampionship: true },
+      { name: "RAW_WOMENS", brand: "RAW", division: "WOMENS", isChampionship: true },
+      { name: "SMACKDOWN_WOMENS", brand: "SMACKDOWN", division: "WOMENS", isChampionship: true },
+      { name: "NXT_WOMENS", brand: "NXT", division: "WOMENS", isChampionship: true },
+      { name: "RAW_TAG_TEAM", brand: "RAW", division: "TAG_TEAM", isChampionship: true },
+      { name: "SMACKDOWN_TAG_TEAM", brand: "SMACKDOWN", division: "TAG_TEAM", isChampionship: true },
+      { name: "NXT_TAG_TEAM", brand: "NXT", division: "TAG_TEAM", isChampionship: true },
+      { name: "MENS_ROYAL_RUMBLE", isChampionship: false },
+      { name: "WOMENS_ROYAL_RUMBLE", isChampionship: false },
+      { name: "MENS_ELIMINATION_CHAMBER", isChampionship: false },
+      { name: "WOMENS_ELIMINATION_CHAMBER", isChampionship: false },
+      { name: "MENS_MONEY_IN_THE_BANK", isChampionship: false },
+      { name: "WOMENS_MONEY_IN_THE_BANK", isChampionship: false },
+      { name: "KING_OF_THE_RING", isChampionship: false },
+      { name: "QUEEN_OF_THE_RING", isChampionship: false },
     ]
   });
 
@@ -310,7 +310,7 @@ async function main() {
   const tournaments = [
     {
       name: "WWE Championship Tournament",
-      title: "WWE Championship",
+      title: "WWE",
       type: "singles" as TournamentType,
       seeds: [
         "Brock Lesnar",
@@ -325,7 +325,7 @@ async function main() {
     },
     {
       name: "Universal Championship Tournament",
-      title: "Universal Championship",
+      title: "UNIVERSAL",
       type: "singles" as TournamentType,
       seeds: [
         "Roman Reigns",
@@ -340,7 +340,7 @@ async function main() {
     },
     {
       name: "Intercontinental Championship Tournament",
-      title: "Intercontinental Championship",
+      title: "INTERCONTINENTAL",
       type: "singles" as TournamentType,
       seeds: [
         "Ric Flair",
@@ -355,7 +355,7 @@ async function main() {
     },
     {
       name: "United States Championship Tournament",
-      title: "United States Championship",
+      title: "UNITED_STATES",
       type: "singles" as TournamentType,
       seeds: [
         "Ricky Steamboat",
@@ -370,7 +370,7 @@ async function main() {
     },
     {
       name: "RAW Women's Championship Tournament",
-      title: "RAW Women's Championship",
+      title: "RAW_WOMENS",
       type: "singles" as TournamentType,
       seeds: [
         "Asuka",
@@ -385,7 +385,7 @@ async function main() {
     },
     {
       name: "SmackDown Women's Championship Tournament",
-      title: "SmackDown Women's Championship",
+      title: "SMACKDOWN_WOMENS",
       type: "singles" as TournamentType,
       seeds: [
         "Alexa Bliss",
@@ -400,7 +400,7 @@ async function main() {
     },
     {
       name: "RAW Tag Team Championship Tournament",
-      title: "RAW Tag Team Championship",
+      title: "RAW_TAG_TEAM",
       type: "tagTeam" as TournamentType,
       seeds: [
         "DDP & Cactus Jack",
@@ -415,7 +415,7 @@ async function main() {
     },
     {
       name: "SmackDown Tag Team Championship Tournament",
-      title: "SmackDown Tag Team Championship",
+      title: "SMACKDOWN_TAG_TEAM",
       type: "tagTeam" as TournamentType,
       seeds: [
         "The Outsiders",
@@ -430,7 +430,7 @@ async function main() {
     },
     {
       name: "NXT Championship Tournament",
-      title: "NXT Championship",
+      title: "NXT",
       type: "singles" as TournamentType,
       seeds: [
         "Booker T",
@@ -469,7 +469,7 @@ async function main() {
     },
     {
       name: "NXT Women's Championship Tournament",
-      title: "NXT Women's Championship",
+      title: "NXT_WOMENS",
       type: "singles" as TournamentType,
       seeds: [
         "Mickie James",
@@ -489,7 +489,7 @@ async function main() {
     },
     {
       name: "NXT Tag Team Championship Tournament",
-      title: "NXT Tag Team Championship",
+      title: "NXT_TAG_TEAM",
       type: "tagTeam" as TournamentType,
       seeds: [
         "#DIY",

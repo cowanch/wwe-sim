@@ -35,6 +35,28 @@ enum Phase {
   TOURNAMENT
 }
 
+enum TitleName {
+  WWE
+  UNIVERSAL
+  INTERCONTINENTAL
+  UNITED_STATES
+  RAW_WOMENS
+  SMACKDOWN_WOMENS
+  RAW_TAG_TEAM
+  SMACKDOWN_TAG_TEAM
+  NXT
+  NXT_WOMENS
+  NXT_TAG_TEAM
+  MENS_ROYAL_RUMBLE
+  WOMENS_ROYAL_RUMBLE
+  MENS_ELIMINATION_CHAMBER
+  WOMENS_ELIMINATION_CHAMBER
+  MENS_MONEY_IN_THE_BANK
+  WOMENS_MONEY_IN_THE_BANK
+  KING_OF_THE_RING
+  QUEEN_OF_THE_RING
+}
+
 enum MatchType {
   SINGLE
   TAG_TEAM
@@ -100,7 +122,7 @@ model TagTeamMembership {
 
 model Title {
   id              Int       @id @default(autoincrement())
-  name            String
+  name            TitleName
   isChampionship  Boolean
   brand           Brand?
   division        Division?
