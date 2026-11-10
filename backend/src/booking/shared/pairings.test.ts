@@ -1,6 +1,7 @@
 // src/booking/shared/pairings.test.ts
 import { describe, expect, it } from "vitest";
 import { pairSeeds } from "./pairings.js";
+import brackets from "./testing/titleBrackets.json";
 
 // [1, 2, ..., n]: each item is its own seed number, so results are easy to read
 const seeds = (n: number) => Array.from({ length: n }, (_, i) => i + 1);
@@ -52,7 +53,7 @@ describe("pairSeeds", () => {
 
     it.each([3, 5, 6, 7, 9, 12])(
       "gives byes only to the top seeds (%i seeds)",
-      (n) => {
+      (n: number) => {
         const size = 2 ** Math.ceil(Math.log2(n));
         const byeSeeds = pairSeeds(seeds(n))
           .filter(([, low]) => low === null)
@@ -67,7 +68,7 @@ describe("pairSeeds", () => {
   describe("bracket structure", () => {
     it.each(Array.from({ length: 32 }, (_, i) => i + 2))(
       "places every seed exactly once (%i seeds)",
-      (n) => {
+      (n: number) => {
         const placed = pairSeeds(seeds(n))
           .flat()
           .filter((s): s is number => s !== null)
@@ -79,7 +80,7 @@ describe("pairSeeds", () => {
 
     it.each([4, 8, 16, 32])(
       "puts seeds 1 and 2 in opposite halves (%i seeds)",
-      (n) => {
+      (n: number) => {
         const pairs = pairSeeds(seeds(n));
         const inTopHalf = (seed: number) =>
           pairs.findIndex(([a, b]) => a === seed || b === seed) < pairs.length / 2;
@@ -119,9 +120,28 @@ describe("pairSeeds", () => {
     });
   });
 
+  interface BracketCase {
+    name: string;
+    seeds: string[];
+    expected: (string | null)[][];
+  }
+
+  const input: Record<string, string[]> = brackets.input;
+  const output: Record<string, (string | null)[][]> = brackets.output;
+
+  const cases: BracketCase[] = Object.entries(input).map(([name, seeds]) => ({
+    name,
+    seeds,
+    expected: output[name],
+  }));
+
   describe("championship tournament parity", () => {
-    it("seeds the wwe championship tournament correctly", () => {
-      
-    })
+    it("has an expected output for every input, and vice versa", () => {
+      expect(Object.keys(output).sort()).toEqual(Object.keys(input).sort());
+    });
+
+    it.each<BracketCase>(cases)("pairs the $name bracket", ({ seeds, expected }: BracketCase) => {
+      expect(pairSeeds(seeds)).toEqual(expected);
+    });
   })
 });

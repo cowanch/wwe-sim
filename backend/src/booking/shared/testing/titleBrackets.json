@@ -1,0 +1,239 @@
+{
+  "input": {
+    "wwe": [
+      "Brock Lesnar",
+      "John Cena",
+      "Goldberg",
+      "Seth Rollins",
+      "Eddie Guerrero",
+      "Edge",
+      "Dusty Rhodes",
+      "Randy Orton"
+    ],
+    "universal": [
+      "Roman Reigns",
+      "The Rock",
+      "Bret Hart",
+      "Steve Austin",
+      "Daniel Bryan",
+      "Ultimate Warrior",
+      "AJ Styles",
+      "Randy Savage"
+    ],
+    "intercontinental": [
+      "Ric Flair",
+      "Kane",
+      "Shinsuke Nakamura",
+      "Undertaker",
+      "Vader",
+      "Finn Bálor",
+      "Jinder Mahal",
+      "Sycho Sid"
+    ],
+    "unitedStates": [
+      "Ricky Steamboat",
+      "Shawn Michaels",
+      "Sting",
+      "Triple H",
+      "Braun Strowman",
+      "Dean Ambrose",
+      "Kevin Owens",
+      "Samoa Joe"
+    ],
+    "rawWomens": [
+      "Asuka",
+      "Charlotte Flair",
+      "Naomi",
+      "Lita",
+      "Sasha Banks",
+      "Jacqueline",
+      "Natalya",
+      "Paige"
+    ],
+    "smackdownWomens": [
+      "Alexa Bliss",
+      "Alundra Blayze",
+      "Nikki Bella",
+      "Trish Stratus",
+      "Bayley",
+      "Becky Lynch",
+      "Nia Jax",
+      "Ivory"
+    ],
+    "rawTagTeam": [
+      "DDP & Cactus Jack",
+      "The Usos",
+      "The Bar",
+      "The Dream Team",
+      "Gallows & Anderson",
+      "The Fabulous Freebirds",
+      "Slater & Rhyno",
+      "The Hype Bros"
+    ],
+    "smackdownTagTeam": [
+      "The Outsiders",
+      "The Von Erichs",
+      "The New Day",
+      "The Hart Foundation",
+      "The Authors of Pain",
+      "The Natural Disasters",
+      "The Revival",
+      "American Alpha"
+    ],
+    "nxt": [
+      "Booker T",
+      "Chris Jericho",
+      "Jake Roberts",
+      "The Miz",
+      "JBL",
+      "Mr. Perfect",
+      "Bam Bam Bigelow",
+      "Bobby Roode",
+      "Bray Wyatt",
+      "Christian",
+      "Baron Corbin",
+      "Neville",
+      "Rusev",
+      "Sami Zayn",
+      "Shane McMahon",
+      "Dolph Ziggler",
+      "Rikishi",
+      "Albert",
+      "Big Show",
+      "Mark Henry",
+      "Kassius Ohno",
+      "Roderick Strong",
+      "Tye Dillinger",
+      "No Way Jose",
+      "TJP",
+      "Darren Young",
+      "Tyson Kidd",
+      "Aiden English",
+      "Noam Dar",
+      "Gran Metalik",
+      "Curt Hawkins",
+      "Sawyer Fulton"
+    ],
+    "nxtWomens": [
+      "Mickie James",
+      "Carmella",
+      "Brie Bella",
+      "Ember Moon",
+      "Nikki Cross",
+      "Peyton Royce",
+      "Billie Kay",
+      "Tamina",
+      "Dana Brooke",
+      "Emma",
+      "Alicia Fox",
+      "Maryse",
+      "Summer Rae"
+    ],
+    "nxtTagTeam": [
+      "#DIY",
+      "Itami & Tozawa",
+      "Breezango",
+      "Enzo & Cass",
+      "SAnitY",
+      "The Wyatt Family",
+      "Titus Worldwide",
+      "TM-61",
+      "Alexander & Swann",
+      "The Colons",
+      "The B-Team",
+      "The Golden Truth",
+      "Kendrick & Gallagher",
+      "The Ascension",
+      "The Bushwhackers",
+      "The Lucha Dragons"
+    ]
+  },
+  "output": {
+    "wwe": [
+      ["Brock Lesnar", "Randy Orton"],
+      ["Seth Rollins", "Eddie Guerrero"],
+      ["John Cena", "Dusty Rhodes"],
+      ["Goldberg", "Edge"]
+    ],
+    "universal": [
+      ["Roman Reigns", "Randy Savage"],
+      ["Steve Austin", "Daniel Bryan"],
+      ["The Rock", "AJ Styles"],
+      ["Bret Hart", "Ultimate Warrior"]
+    ],
+    "intercontinental": [
+      ["Ric Flair", "Sycho Sid"],
+      ["Undertaker", "Vader"],
+      ["Kane", "Jinder Mahal"],
+      ["Shinsuke Nakamura", "Finn Bálor"]
+    ],
+    "unitedStates": [
+      ["Ricky Steamboat", "Samoa Joe"],
+      ["Triple H", "Braun Strowman"],
+      ["Shawn Michaels", "Kevin Owens"],
+      ["Sting", "Dean Ambrose"]
+    ],
+    "rawWomens": [
+      ["Asuka", "Paige"],
+      ["Lita", "Sasha Banks"],
+      ["Charlotte Flair", "Natalya"],
+      ["Naomi", "Jacqueline"]
+    ],
+    "smackdownWomens": [
+      ["Alexa Bliss", "Ivory"],
+      ["Trish Stratus", "Bayley"],
+      ["Alundra Blayze", "Nia Jax"],
+      ["Nikki Bella", "Becky Lynch"]
+    ],
+    "rawTagTeam": [
+      ["DDP & Cactus Jack", "The Hype Bros"],
+      ["The Dream Team", "Gallows & Anderson"],
+      ["The Usos", "Slater & Rhyno"],
+      ["The Bar", "The Fabulous Freebirds"]
+    ],
+    "smackdownTagTeam": [
+      ["The Outsiders", "American Alpha"],
+      ["The Hart Foundation", "The Authors of Pain"],
+      ["The Von Erichs", "The Revival"],
+      ["The New Day", "The Natural Disasters"]
+    ],
+    "nxt": [
+      ["Booker T", "Sawyer Fulton"],
+      ["Dolph Ziggler", "Rikishi"],
+      ["Bobby Roode", "TJP"],
+      ["Bray Wyatt", "No Way Jose"],
+      ["The Miz", "Noam Dar"],
+      ["Rusev", "Mark Henry"],
+      ["JBL", "Aiden English"],
+      ["Neville", "Kassius Ohno"],
+      ["Chris Jericho", "Curt Hawkins"],
+      ["Shane McMahon", "Albert"],
+      ["Bam Bam Bigelow", "Darren Young"],
+      ["Christian", "Tye Dillinger"],
+      ["Jake Roberts", "Gran Metalik"],
+      ["Sami Zayn", "Big Show"],
+      ["Mr. Perfect", "Tyson Kidd"],
+      ["Baron Corbin", "Roderick Strong"]
+    ],
+    "nxtWomens": [
+      ["Mickie James", null],
+      ["Tamina", "Dana Brooke"],
+      ["Ember Moon", "Summer Rae"],
+      ["Nikki Cross", "Maryse"],
+      ["Carmella", null],
+      ["Billie Kay", "Emma"],
+      ["Brie Bella", null],
+      ["Peyton Royce", "Alicia Fox"]
+    ],
+    "nxtTagTeam": [
+      ["#DIY", "The Lucha Dragons"],
+      ["TM-61", "Alexander & Swann"],
+      ["Enzo & Cass", "Kendrick & Gallagher"],
+      ["SAnitY", "The Golden Truth"],
+      ["Itami & Tozawa", "The Bushwhackers"],
+      ["Titus Worldwide", "The Colons"],
+      ["Breezango", "The Ascension"],
+      ["The Wyatt Family", "The B-Team"]
+    ]
+  }
+}
