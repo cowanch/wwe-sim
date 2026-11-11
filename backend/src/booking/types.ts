@@ -2,7 +2,7 @@ import { MatchType, Phase, Superstar, Tournament } from "@prisma/client";
 import { MatchDetailed, TournamentDetailed } from "../services/matchService";
 
 export interface BookedSide {
-  superstarIds: number[];
+  superstarId?: number;
   tagTeamId?: number;
   titleId?: number;
 }

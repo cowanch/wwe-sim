@@ -1,6 +1,5 @@
 import * as matchService from "./matchService";
 import * as ppvService from  "./ppvService";
-import * as strategyFactory from "../booking/strategyFactory";
 import { BookedMatch } from "../booking/types";
 import { PpvCycle } from "@prisma/client";
 
@@ -25,8 +24,6 @@ export async function checkMatches() {
 
     const initialTournaments = await matchService.getScheduledTournaments();
 
-    // The booking strategy for the first PPV will the firstPpv
-    // strategyFactory.getFirstStrategy();
   }
 
   // TODO: resolve roster changes based on the last cycle

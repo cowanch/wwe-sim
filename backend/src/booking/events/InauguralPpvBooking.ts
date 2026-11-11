@@ -1,18 +1,29 @@
 import { MatchDetailed } from "@/services/matchService";
 import { BookedMatch, TournamentContext } from "../types";
-import BasePpvBooking from "./BasePpvBooking";
+import { pairSeeds } from "../shared/pairings";
 
-export default class InauguralPpvBooking extends BasePpvBooking<TournamentContext> {
+export default class InauguralPpvBooking {
   
-  override bookMatches(bookCtx: TournamentContext): BookedMatch[] {
+  bookMatches(bookCtx: TournamentContext): BookedMatch[] {
     const { tournaments } = bookCtx;
     tournaments.forEach((tournament) => {
-      // tournament.seeds
+      const pairs = pairSeeds(tournament.seeds);
+      const matches = pairs.map((pair) => {
+        const match: BookedMatch = {
+          phase: "EXHIBITION",
+          matchType: "SINGLE",
+          sides: pair.map((seed) => ({ 
+            superstarId: seed?.superstarId || undefined,
+            tagTeamId: seed?.tagTeamId || undefined,
+          }))
+        }
+      });
+      return matches;
     });
     return [];
   }
 
-  override checkMatches(matches: MatchDetailed[]): BookedMatch[] {
+  checkMatches(matches: MatchDetailed[]): BookedMatch[] {
     // For each tournament, add a match according to the seeds
     return [];
   }
