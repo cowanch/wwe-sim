@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import * as tagTeamService from "../services/tagTeamService";
 
 export async function getAll(req: Request, res: Response) {
+	req.log.info("fetching tag teams");
 	const tagTeams = await tagTeamService.getAll();
 
 	res.json(tagTeams.map((tagTeam) => {
@@ -36,6 +37,7 @@ export async function getAll(req: Request, res: Response) {
 
 export async function getById(req: Request, res: Response) {
 	const id = Number(req.params.id);
+	req.log.info({ id }, "fetching tag team by ID");
 	const tagTeam = await tagTeamService.getById(id);
 	if (!tagTeam) return res.status(404).json({ error: "Tag team not found" });
 	res.json(tagTeam);
@@ -43,6 +45,7 @@ export async function getById(req: Request, res: Response) {
 
 export async function create(req: Request, res: Response) {
 	const { name } = req.body;
+	req.log.info({ name }, "creating tag team");
 	if (!name) {
 		return res.status(400).json({ error: "name is required" });
 	}

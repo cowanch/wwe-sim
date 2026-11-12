@@ -1,3 +1,4 @@
+import { logger } from "@/lib/logger";
 import prisma from "../lib/prisma";
 import type { MatchType, Phase, Prisma } from "@prisma/client";
 
@@ -26,7 +27,7 @@ export interface MatchSideInput {
 	titleId?: number;
 }
 
-interface TournamentMatchInput {
+export interface TournamentMatchInput {
 	tournamentId: number;
 	matchId: number;
 	matchNumber: number;
@@ -47,8 +48,9 @@ export async function getScheduledMatches(): Promise<MatchDetailed[]> {
 	});
 }
 
-export async function create(data: CreateMatchInput) {
+export async function create(data: CreateMatchInput): Promise<MatchDetailed> {
 	const { phase, cycleId, matchType, titleId, sides } = data;
+	logger.info({ ...data }, "creating matches");
 	const createSides = sides.map((side) => ({
 		winner: false,
 		superstars: {
@@ -59,6 +61,7 @@ export async function create(data: CreateMatchInput) {
 	}));
 
 	return prisma.match.create({
+		...matchWithRelations,
 		data: {
 			phase,
 			cycleId,
@@ -68,7 +71,6 @@ export async function create(data: CreateMatchInput) {
 				create: createSides,
 			},
 		},
-		include: { sides: { include: { superstars: true } } },
 	});
 }
 
@@ -80,5 +82,6 @@ export async function getScheduledTournaments(): Promise<TournamentDetailed[]> {
 }
 
 export async function createTournamentMatch(data: TournamentMatchInput) {
-	return prisma.tournamentMatch.create({ data })
+	logger.info({ ...data }, "creating tournament matches");
+	return prisma.tournamentMatch.create({ data });
 }

@@ -3,6 +3,7 @@ import * as superstarService from "../services/superstarService";
 
 export async function getAll(req: Request, res: Response) {
 	const { gender } = req.query;
+	req.log.info({ gender }, "fetching superstars");
 
 	if (gender !== undefined && gender !== "M" && gender !== "F") {
 		return res.status(400).json({ error: "gender must be M or F" });
@@ -35,6 +36,7 @@ export async function getAll(req: Request, res: Response) {
 
 export async function getById(req: Request, res: Response) {
 	const id = Number(req.params.id);
+	req.log.info({ id }, "fetching superstar by ID");
 	const superstar = await superstarService.getById(id);
 	if (!superstar) return res.status(404).json({ error: "Superstar not found" });
 	res.json(superstar);
@@ -42,6 +44,7 @@ export async function getById(req: Request, res: Response) {
 
 export async function create(req: Request, res: Response) {
 	const { name, overall, gender } = req.body;
+	req.log.info({ name, overall, gender }, "creating superstar");
 	if (!name || overall === undefined || !gender) {
 		return res.status(400).json({ error: "name, overall, and gender are required" });
 	}

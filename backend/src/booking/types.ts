@@ -7,13 +7,18 @@ export interface BookedSide {
   titleId?: number;
 }
 
+export interface TournamentInfo {
+  id: number;
+  matchNumber: number;
+}
+
 export interface BookedMatch {
   phase: Phase;
   matchType: MatchType;
   sides: BookedSide[];
   titleId?: number;
   // present only for tournament matches; adjust to whatever TournamentMatch stores
-  tournament?: { id: number; matchNumber: number; };
+  tournament?: TournamentInfo;
 }
 
 export interface DivisionRoster {
