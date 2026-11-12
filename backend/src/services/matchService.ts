@@ -12,7 +12,7 @@ const tournamentWithSeeds = {
 export type MatchDetailed = Prisma.MatchGetPayload<typeof matchWithRelations>;
 export type TournamentDetailed = Prisma.TournamentGetPayload<typeof tournamentWithSeeds>;
 
-interface CreateMatchInput {
+export interface CreateMatchInput {
   phase: Phase
   cycleId: number;
 	matchType: MatchType;
@@ -20,7 +20,7 @@ interface CreateMatchInput {
 	sides: MatchSideInput[];
 }
 
-interface MatchSideInput {
+export interface MatchSideInput {
 	superstarIds: number[];
 	tagTeamId?: number;
 	titleId?: number;

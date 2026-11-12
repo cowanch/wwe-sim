@@ -2,6 +2,8 @@ import * as matchService from "./matchService";
 import * as ppvService from  "./ppvService";
 import { BookedMatch } from "../booking/types";
 import { PpvCycle } from "@prisma/client";
+import InauguralPpvBooking from "@/booking/events/InauguralPpvBooking";
+import { toMatchInput } from "./bookingMapper";
 
 export async function checkMatches() {
   const scheduledMatches = await matchService.getScheduledMatches();
@@ -24,6 +26,9 @@ export async function checkMatches() {
 
     const initialTournaments = await matchService.getScheduledTournaments();
 
+    const inauguralBooking = new InauguralPpvBooking();
+    const bookedMatches = inauguralBooking.bookMatches({ tournaments: initialTournaments });
+    await createMatches(nextCycle, bookedMatches);
   }
 
   // TODO: resolve roster changes based on the last cycle
@@ -34,14 +39,7 @@ export async function checkMatches() {
 
 export async function createMatches(ppvCycle: PpvCycle, bookedMatches: BookedMatch[]) {
   for (const bookedMatch of bookedMatches) {
-    const { phase, sides, titleId, matchType } = bookedMatch;
-    const match = await matchService.create({
-      phase,
-      cycleId: ppvCycle.id,
-      matchType,
-      titleId,
-      sides
-    });
+    const match = await matchService.create(toMatchInput(bookedMatch, ppvCycle.id));
     if (bookedMatch.tournament) {
       const { id: tournamentId, matchNumber } = bookedMatch.tournament;
       await matchService.createTournamentMatch({
